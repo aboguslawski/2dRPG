@@ -13,6 +13,7 @@ public abstract class Creature extends Entity {
     public static final int DEFAULT_CREATURE_WIDTH = 64;
     public static final int DEFAULT_CREATURE_HEIGHT = 128;
 
+    protected String direction;
     protected int health;
     protected float speed;
     protected float xMove, yMove;
@@ -23,6 +24,7 @@ public abstract class Creature extends Entity {
         this.speed = DEFAULT_SPEED;
         xMove = 0;
         yMove = 0;
+        direction = "S";
     }
 
     // ruch creature
@@ -41,6 +43,11 @@ public abstract class Creature extends Entity {
         // ** KOLIZJE X **
         if(xMove > 0){
             // w prawo
+            // zwrot
+            if(yMove < 0) direction = "NE";
+            else if(yMove == 0) direction = "E";
+            else if(yMove > 0) direction = "SE";
+
             int tx = (int) (x + xMove + bounds.x + bounds.width) / Tile.TILE_WIDTH; // tx - gdzie chcemy sie ruszyc (prawy kraniec)
 
             if(!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT)  // prawy gory rog
@@ -54,6 +61,12 @@ public abstract class Creature extends Entity {
                 }
         }else if (xMove < 0){
             // w lewo
+            // zwrot
+            if(yMove < 0) direction = "NW";
+            else if(yMove == 0) direction = "W";
+            else if(yMove > 0) direction = "SW";
+
+
             int tx = (int) (x + xMove + bounds.x) / Tile.TILE_WIDTH; // tx - gdzie chcemy sie ruszyc (lewy kraniec)
 
             if(!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT)  // lewy gory rog
@@ -74,6 +87,12 @@ public abstract class Creature extends Entity {
         // ** KOLIZJE Y **
         if (yMove < 0) {
             // do gory
+            // zwrot
+            if(xMove < 0) direction = "NW";
+            else if(xMove == 0) direction = "N";
+            else if(xMove > 0) direction = "NE";
+
+
             int ty = (int) (y + yMove + bounds.y) / Tile.TILE_HEIGHT; // ty - gdzie chcemy sie ruszyc (gorny kraniec)
 
             if (!collisionWithTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty) // lewy gorny rog
@@ -86,6 +105,12 @@ public abstract class Creature extends Entity {
                 }
             } else if (yMove > 0) {
             // w dol
+            // zwrot
+            if(xMove < 0) direction = "SW";
+            else if(xMove == 0) direction = "S";
+            else if(xMove > 0) direction = "SE";
+
+
             int ty = (int) (y + yMove + bounds.y + bounds.height) / Tile.TILE_HEIGHT; // ty - gdzie chcemy sie ruszyc (dolny kraniec)
 
             if(!collisionWithTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty) // lewy dolny rog
@@ -120,6 +145,15 @@ public abstract class Creature extends Entity {
 
 
     // Getters Setters
+
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
 
     public float getxMove() {
         return xMove;

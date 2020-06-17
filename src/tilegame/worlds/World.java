@@ -3,10 +3,14 @@ package tilegame.worlds;
 import tilegame.Handler;
 import tilegame.display.Display;
 import tilegame.entities.Player;
+import tilegame.gfx.Animation;
+import tilegame.gfx.Assets;
+import tilegame.gfx.DayNightCycle;
 import tilegame.tiles.Tile;
 import tilegame.utils.Utils;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class World {
 
@@ -15,14 +19,17 @@ public class World {
     private int spawnX, spawnY;
     private int[][] worldTiles;
     private Player player;
+    private boolean surface;
+    private DayNightCycle cycle;
 
-    public World(Handler handler, String path){
+    public World(Handler handler, String path, boolean surface, DayNightCycle cycle){
         this.handler = handler;
         loadWorld(path);
+        this.surface = surface;
+        this.cycle = cycle;
     }
 
     public void tick(){
-
     }
 
     public void render (Graphics g){
@@ -32,7 +39,6 @@ public class World {
         int xEnd = (int)Math.min(width, (handler.getGameCamera().getxOffset() + Display.SCREEN_WIDTH) / Tile.TILE_WIDTH +1);
         int yStart = (int)Math.max(0, handler.getGameCamera().getyOffset() / Tile.TILE_HEIGHT);
         int yEnd = (int)Math.min(height, (handler.getGameCamera().getyOffset() + Display.SCREEN_HEIGHT) / Tile.TILE_HEIGHT +1);
-
         // renderowanie tilesow w odpowiednich miejscach
         for(int j = yStart; j < yEnd; j++){
             for(int i = xStart ; i < xEnd; i++){
@@ -40,6 +46,10 @@ public class World {
                         (int)(j * Tile.TILE_HEIGHT - handler.getGameCamera().getyOffset()));
             }
         }
+
+        // maska
+        renderMask(g, Assets.bkgdMask);
+
     }
 
     // zwraca tile na danych kordach i j
@@ -70,6 +80,23 @@ public class World {
             }
         }
 
+    }
+
+    // rysowanie maski na calym ekranie
+    private void renderMask(Graphics g, BufferedImage img){
+        g.drawImage(img, (int)(0 - handler.getGameCamera().getxOffset()),(int)(0 - handler.getGameCamera().getyOffset()),null);
+    }
+
+    public boolean isSurface(){
+        return this.surface;
+    }
+
+    public DayNightCycle getCycle() {
+        return cycle;
+    }
+
+    public void setCycle(DayNightCycle cycle) {
+        this.cycle = cycle;
     }
 
     public int getSpawnX() {

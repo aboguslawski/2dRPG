@@ -1,21 +1,22 @@
 package tilegame.gfx;
 
-import tilegame.entities.Player;
-
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Assets {
 
     public static BufferedImage floor, wall, shallowWater, mediumWater, deepWater;
     public static BufferedImage player, playerSword;
+    public static BufferedImage bkgdMask;
 
-    public static BufferedImage[] player_down, player_up, player_left, player_right;
+    public static BufferedImage[] playerS, playerN, playerW, playerE, playerNW, playerNE, playerSW, playerSE,
+    dayNightCycle;
 
     public static final int TILE_WIDTH = 64, TILE_HEIGHT = 64;
 
     public static void init(){
         Spritesheet spritesheet = new Spritesheet(ImageLoader.loadImage("/res/textures/Spritesheet.png"));
-        Spritesheet playerWalkSheet = new Spritesheet(ImageLoader.loadImage("/res/textures/playerWalk.png"));
+//        Spritesheet playerWalkSheet = new Spritesheet(ImageLoader.loadImage("/res/textures/playerWalk.png"));
 
         floor = spritesheet.crop(0,0,TILE_WIDTH, TILE_HEIGHT);
         wall = spritesheet.crop(TILE_WIDTH,0,TILE_WIDTH, TILE_HEIGHT);
@@ -23,36 +24,56 @@ public class Assets {
         mediumWater = spritesheet.crop(TILE_WIDTH*3, 0, TILE_WIDTH, TILE_HEIGHT);
         deepWater = spritesheet.crop(TILE_WIDTH*4, 0, TILE_WIDTH, TILE_HEIGHT);
 
-        // down
-        player_down = new BufferedImage[4];
-        player_down[0] = playerWalkSheet.crop(0,0, 64, 128);
-        player_down[1] = playerWalkSheet.crop(64,0, 64, 128);
-        player_down[2] = playerWalkSheet.crop(64 * 2,0, 64, 128);
-        player_down[3] = playerWalkSheet.crop(64 * 3,0, 64, 128);
+        // animacja gracza
+        playerS = animArray(4,0, 64, 128);
+        playerN = animArray(4,1, 64, 128);
+        playerE = animArray(4,2, 64, 128);
+        playerW = animArray(4,3, 64, 128);
+        playerNW = animArray(4,4, 64, 128);
+        playerNE = animArray(4,5, 64, 128);
+        playerSE = animArray(4,6, 64, 128);
+        playerSW = animArray(4,7, 64, 128);
 
-        // up
-        player_up = new BufferedImage[4];
-        player_up[0] = playerWalkSheet.crop(0,128, 64, 128);
-        player_up[1] = playerWalkSheet.crop(64,128, 64, 128);
-        player_up[2] = playerWalkSheet.crop(64 * 2,128, 64, 128);
-        player_up[3] = playerWalkSheet.crop(64 * 3,128, 64, 128);
+        // maska
+        bkgdMask = ImageLoader.loadImage("/res/textures/mask.png");
 
-        // left
-        player_right = new BufferedImage[4];
-        player_right[0] = playerWalkSheet.crop(0,128 *2, 64, 128);
-        player_right[1] = playerWalkSheet.crop(64,128 *2, 64, 128);
-        player_right[2] = playerWalkSheet.crop(64 * 2,128 *2, 64, 128);
-        player_right[3] = playerWalkSheet.crop(64 * 3,128 *2, 64, 128);
+        // cykl dnia i nocy
+        dayNightCycle = new BufferedImage[24];
 
-        // right
-        player_left = new BufferedImage[4];
-        player_left[0] = playerWalkSheet.crop(0,128 *3, 64, 128);
-        player_left[1] = playerWalkSheet.crop(64,128 *3, 64, 128);
-        player_left[2] = playerWalkSheet.crop(64 * 2,128 *3, 64, 128);
-        player_left[3] = playerWalkSheet.crop(64 * 3,128 *3, 64, 128);
 
+        // stare
         player = ImageLoader.loadImage("/res/textures/test.png");
         playerSword = ImageLoader.loadImage("/res/textures/testSword.png");
 
+    }
+
+    private static BufferedImage[] animArray(int frames, int row, int width, int height){
+        BufferedImage[] array = new BufferedImage[frames];
+        Spritesheet playerWalkSheet = new Spritesheet(ImageLoader.loadImage("/res/textures/playerWalk.png"));
+
+        for(int i = 0; i < array.length; i++){
+            array[i] = playerWalkSheet.crop(width * i, height * row, width, height);
+        }
+
+        return array;
+    }
+
+    // cykl dnia i nocy animacja
+    private static BufferedImage[] cycleAnim(){
+        BufferedImage[] dayNightCycle = new BufferedImage[24];
+
+        for(int i = 0; i < dayNightCycle.length; i++){
+            if(i <= 5)
+                dayNightCycle[i] = ImageLoader.loadImage("/res/textures/daycycle/night.png");
+            else if(i <= 8)
+                dayNightCycle[i] = ImageLoader.loadImage("/res/textures/daycycle/dawn.png");
+            else if(i <= 17)
+                dayNightCycle[i] = ImageLoader.loadImage("/res/textures/daycycle/midday.png");
+            else if(i <= 21)
+                dayNightCycle[i] = ImageLoader.loadImage("/res/textures/daycycle/sunset.png");
+            else
+                dayNightCycle[i] = ImageLoader.loadImage("/res/textures/daycycle/dusk.png");
+        }
+        return dayNightCycle;
     }
 }

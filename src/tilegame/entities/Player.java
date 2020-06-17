@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 public class Player extends Creature {
 
     // ANIMATIONS
-    private Animation animDown, animUp, animLeft, animRight;
+    private Animation animS, animN, animW, animE, animNW, animNE, animSE, animSW;
 
     private boolean sword;
 
@@ -26,20 +26,28 @@ public class Player extends Creature {
         bounds.height = 48;
 
         // Animation
-        animDown = new Animation(200, Assets.player_down);
-        animUp = new Animation(200, Assets.player_up);
-        animLeft = new Animation(200, Assets.player_left);
-        animRight = new Animation(200, Assets.player_right);
+        animS = new Animation(200, Assets.playerS);
+        animN = new Animation(200, Assets.playerN);
+        animW = new Animation(200, Assets.playerW);
+        animE = new Animation(200, Assets.playerE);
+        animNW = new Animation(200,Assets.playerNW);
+        animNE = new Animation(200,Assets.playerNE);
+        animSE = new Animation(200,Assets.playerSE);
+        animSW = new Animation(200,Assets.playerSW);
 
     }
 
     @Override
     public void tick() {
         //Animations
-        animDown.tick();
-        animUp.tick();
-        animLeft.tick();
-        animRight.tick();
+        animS.tick();
+        animN.tick();
+        animW.tick();
+        animE.tick();
+        animNW.tick();
+        animNE.tick();
+        animSE.tick();
+        animSW.tick();
         //Movement
         getInput();
         move(); // metoda z klasy Creature
@@ -89,16 +97,15 @@ public class Player extends Creature {
                 (int)(y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
+    // ANIMACJA
     private BufferedImage getCurrentAnimationFrame(){
-        if(xMove < 0){
-            return animLeft.getCurrentFrame();
-        }
-        else if(xMove > 0){
-            return animRight.getCurrentFrame();
-        }
-        else if(yMove < 0){
-            return animUp.getCurrentFrame();
-        }
-        else return animDown.getCurrentFrame();
+        if(this.direction.equals("W")) return animW.getCurrentFrame();
+        else if(this.direction.equals("E")) return animE.getCurrentFrame();
+        else if(this.direction.equals("N")) return animN.getCurrentFrame();
+        else if(this.direction.equals("S")) return animS.getCurrentFrame();
+        else if(this.direction.equals("NW")) return animNW.getCurrentFrame();
+        else if(this.direction.equals("NE")) return animNE.getCurrentFrame();
+        else if(this.direction.equals("SE")) return animSE.getCurrentFrame();
+        else return animSW.getCurrentFrame();
     }
 }
