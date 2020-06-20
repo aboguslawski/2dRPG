@@ -12,11 +12,12 @@ public class Player extends Creature {
     // ANIMATIONS
     private Animation animS, animN, animW, animE, animNW, animNE, animSE, animSW;
 
-    private boolean sword;
+    private boolean sword, prevQ;
 
     public Player(Handler handler, float x, float y, int health) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         this.sword = false;
+        this.prevQ = false;
 
         // wspolrzedne kolizji gracza
         // bez tego pokryje sie caly obraz gracza
@@ -76,6 +77,11 @@ public class Player extends Creature {
         if(handler.getKeyManager().sword){
             this.sword = true;
         }else this.sword = false;
+        if(!prevQ && handler.getKeyManager().q){
+            handler.getWorld().getEntityManager().getSeHover().nextEntity();
+        }
+
+        prevQ = handler.getKeyManager().q;
     }
 
     @Override

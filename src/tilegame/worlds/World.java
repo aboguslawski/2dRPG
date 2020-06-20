@@ -2,7 +2,10 @@ package tilegame.worlds;
 
 import tilegame.Handler;
 import tilegame.display.Display;
+import tilegame.entities.EntityManager;
 import tilegame.entities.Player;
+import tilegame.entities.statics.StaticEntityHover;
+import tilegame.entities.statics.TorchStand;
 import tilegame.gfx.Animation;
 import tilegame.gfx.Assets;
 import tilegame.gfx.DayNightCycle;
@@ -21,15 +24,25 @@ public class World {
     private Player player;
     private boolean surface;
     private DayNightCycle cycle;
+    // Entities
+    private EntityManager entityManager;
 
     public World(Handler handler, String path, boolean surface, DayNightCycle cycle){
         this.handler = handler;
+        entityManager = new EntityManager(handler, new Player(handler, 100,100, 20));
+        entityManager.setSeHover(new StaticEntityHover(handler, entityManager.getPlayer(), 50));
         loadWorld(path);
+        entityManager.getPlayer().setX(spawnX);
+        entityManager.getPlayer().setY(spawnY);
+        entityManager.addEntity(new TorchStand(handler, 500,500));
+        entityManager.addEntity(new TorchStand(handler, 530,500));
+
         this.surface = surface;
         this.cycle = cycle;
     }
 
     public void tick(){
+        entityManager.tick();
     }
 
     public void render (Graphics g){
@@ -49,6 +62,8 @@ public class World {
 
         // maska
         renderMask(g, Assets.bkgdMask);
+        //entities
+        entityManager.render(g);
 
     }
 
@@ -89,6 +104,19 @@ public class World {
 
     public boolean isSurface(){
         return this.surface;
+    }
+
+
+    // GETTERS SETTERS
+
+
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     public DayNightCycle getCycle() {

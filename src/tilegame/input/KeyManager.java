@@ -2,6 +2,7 @@ package tilegame.input;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.security.Key;
 
 // *** input ***
 
@@ -11,11 +12,13 @@ public class KeyManager implements KeyListener {
 
     private boolean[] keys;
     private boolean[] pressKeys;
-    public boolean up, down, left, right, run, sword;
+    private boolean[] clickKeys;
+    public boolean up, down, left, right, run, sword, q;
 
     public KeyManager(){
         keys = new boolean[256];
         pressKeys = new boolean[256];
+        clickKeys = new boolean[256];
     }
 
     public void tick(){
@@ -25,6 +28,7 @@ public class KeyManager implements KeyListener {
         right = keys[KeyEvent.VK_RIGHT];
         run = keys[KeyEvent.VK_SHIFT];
         sword = pressKeys[KeyEvent.VK_1];
+        q = keys[KeyEvent.VK_Q];
     }
 
     @Override

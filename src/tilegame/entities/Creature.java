@@ -10,10 +10,10 @@ public abstract class Creature extends Entity {
 
     public static final int DEFAULT_HEALTH = 10;
     public static final float DEFAULT_SPEED = 3.0f;
-    public static final int DEFAULT_CREATURE_WIDTH = 64;
-    public static final int DEFAULT_CREATURE_HEIGHT = 128;
+    public static final int DEFAULT_CREATURE_WIDTH = 48;
+    public static final int DEFAULT_CREATURE_HEIGHT = 116;
 
-    protected String direction;
+    protected String direction; // strona swiata w ktora jest zwrocony
     protected int health;
     protected float speed;
     protected float xMove, yMove;

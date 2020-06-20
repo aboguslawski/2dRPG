@@ -27,7 +27,6 @@ public abstract class Entity {
     public abstract void render(Graphics g);
 
 
-
     // getters setters
 
     public void setX(float x) {

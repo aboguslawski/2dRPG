@@ -2,15 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="499ea011-ea4e-4aa0-ae5c-ad4670a556b7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/res/textures/mask.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/tilegame/gfx/DayNightCycle.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/res/worlds/world2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tilegame/entities/EntityManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tilegame/entities/statics/StaticEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tilegame/entities/statics/StaticEntityHover.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tilegame/entities/statics/TorchStand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RPG/res/textures/playerWalk.png" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RPG/res/textures/playerWalk.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/res/textures/playerWalk.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/res/textures/playerWalk.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/RPG/res/textures/mask.png" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/RPG/res/textures/mask.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/res/textures/mask.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/res/textures/mask.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/res/worlds/world1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/res/worlds/world1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tilegame/entities/Creature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/Creature.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/Entity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tilegame/entities/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tilegame/gfx/Assets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/gfx/Assets.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/input/KeyManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/input/KeyManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tilegame/states/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/states/GameState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tilegame/worlds/World.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/worlds/World.java" afterDir="false" />
     </list>

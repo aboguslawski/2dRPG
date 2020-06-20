@@ -5,10 +5,16 @@ import java.awt.image.BufferedImage;
 
 public class Assets {
 
+    // spritesheet
     public static BufferedImage floor, wall, shallowWater, mediumWater, deepWater;
+    // test player
     public static BufferedImage player, playerSword;
+    // mask
     public static BufferedImage bkgdMask;
+    // static entities
+    public static BufferedImage torchStand, hover;
 
+    // player animations
     public static BufferedImage[] playerS, playerN, playerW, playerE, playerNW, playerNE, playerSW, playerSE,
     dayNightCycle;
 
@@ -38,8 +44,11 @@ public class Assets {
         bkgdMask = ImageLoader.loadImage("/res/textures/mask.png");
 
         // cykl dnia i nocy
-        dayNightCycle = new BufferedImage[24];
+        dayNightCycle = cycleAnim();
 
+        // static entities
+        torchStand = ImageLoader.loadImage("/res/textures/torchstand.png");
+        hover = ImageLoader.loadImage("/res/textures/hover.png");
 
         // stare
         player = ImageLoader.loadImage("/res/textures/test.png");

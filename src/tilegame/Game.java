@@ -41,6 +41,7 @@ public class Game implements Runnable {
     private State gameState;
 
     // pozostale
+    private int i;
 
     // <<<<<<<<<<<<<<< KONSTRUKTOR <<<<<<<<<<<<<<<<<<<<<<<
 
@@ -48,6 +49,7 @@ public class Game implements Runnable {
     public Game(String title){
         this.title = title;
         keyManager = new KeyManager(); //input
+        this.i = 0;
     }
 
     // <<<<<<<<<<<<<<<<<<<<<< FUNKCJE <<<<<<<<<<<<<<<<<<<
@@ -70,6 +72,7 @@ public class Game implements Runnable {
     // update
     private void tick(){
         keyManager.tick();
+
 
         if(State.getState() != null){
             State.getState().tick();
