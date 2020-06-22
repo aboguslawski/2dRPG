@@ -4,7 +4,7 @@ import tilegame.gfx.Assets;
 
 public class MediumWaterTile extends Tile {
 
-    public MediumWaterTile(int id){
+    public MediumWaterTile(int id) {
         super(Assets.mediumWater, id);
     }
 

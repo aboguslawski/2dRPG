@@ -16,40 +16,40 @@ public class Tile {
 
     // CLASS
 
-        //szerokosc i wysokosc kazdej tiles
+    //szerokosc i wysokosc kazdej tiles
     public static final int TILE_WIDTH = 64, TILE_HEIGHT = 64;
 
-        //parametry kazdej tile
+    //parametry kazdej tile
     protected BufferedImage texture;
     protected final int id;
 
     // konstruktor
-    public Tile(BufferedImage texture, int id){
+    public Tile(BufferedImage texture, int id) {
         this.texture = texture;
         this.id = id;
 
         tiles[id] = this;
     }
 
-    public void tick(){
+    public void tick() {
 
     }
 
-    public void render(Graphics g, int x, int y){
+    public void render(Graphics g, int x, int y) {
         g.drawImage(texture, x, y, TILE_WIDTH, TILE_HEIGHT, null);
     }
 
     // czy da sie na niej chodzic
-    public boolean isSolid(){
+    public boolean isSolid() {
         return false;
     }
 
     // glebokosc
-    public int getDepth(){
+    public int getDepth() {
         return 0;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 }

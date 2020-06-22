@@ -8,7 +8,7 @@ public class WallTile extends Tile {
     }
 
     @Override
-    public boolean isSolid(){
+    public boolean isSolid() {
         return true;
     }
 }

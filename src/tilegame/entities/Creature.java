@@ -8,8 +8,8 @@ import java.awt.*;
 
 public abstract class Creature extends Entity {
 
-    public static final int DEFAULT_HEALTH = 10;
-    public static final float DEFAULT_SPEED = 3.0f;
+    public static final int DEFAULT_HEALTH = 10; // domyslna ilosc punktow zycia
+    public static final float DEFAULT_SPEED = 3.0f; // domyslna szybkosc poruszania sie po mapie
     public static final int DEFAULT_CREATURE_WIDTH = 48;
     public static final int DEFAULT_CREATURE_HEIGHT = 116;
 
@@ -28,55 +28,60 @@ public abstract class Creature extends Entity {
     }
 
     // ruch creature
-    public void move(){
+    public void move() {
         // ruch podzielony jest na poziomy i pionowy
 
-        speedInWater(1,0.7f);
-        moveX();
-        moveY();
+        // w wodzie o glebokosci 1 lub wiekszej szybkosc ruchu jest zredukowana do 70%
+        speedInWater(1, 0.7f);
+
+        // jesli nie ma kolizji z innym obiektem, wykonaj ruch
+        if (!checkEntityCollisions(xMove, 0f))
+            moveX();
+        if (!checkEntityCollisions(0f, yMove))
+            moveY();
 
     }
 
     // ruch poziomy (lewo prawo)
-    public void moveX(){
+    public void moveX() {
 
         // ** KOLIZJE X **
-        if(xMove > 0){
+        if (xMove > 0) {
             // w prawo
             // zwrot
-            if(yMove < 0) direction = "NE";
-            else if(yMove == 0) direction = "E";
-            else if(yMove > 0) direction = "SE";
+            if (yMove < 0) direction = "NE";
+            else if (yMove == 0) direction = "E";
+            else if (yMove > 0) direction = "SE";
 
             int tx = (int) (x + xMove + bounds.x + bounds.width) / Tile.TILE_WIDTH; // tx - gdzie chcemy sie ruszyc (prawy kraniec)
 
-            if(!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT)  // prawy gory rog
-            && !collisionWithTile(tx, (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT)) // prawy dolny rog
-                {
-                    // jesli nie ma kolizji w prawym gornym ani w prawym dolnym rogu, mozesz isc w prawo
-                    x += xMove;
-                } else{
-                    //naprawa bledu
-                    x = tx * Tile.TILE_WIDTH - bounds.x - bounds.width - 1;
-                }
-        }else if (xMove < 0){
+            if (!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT)  // prawy gory rog
+                    && !collisionWithTile(tx, (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT)) // prawy dolny rog
+            {
+                // jesli nie ma kolizji w prawym gornym ani w prawym dolnym rogu, mozesz isc w prawo
+                x += xMove;
+            } else {
+                //naprawa bledu
+                x = tx * Tile.TILE_WIDTH - bounds.x - bounds.width - 1;
+            }
+        } else if (xMove < 0) {
             // w lewo
             // zwrot
-            if(yMove < 0) direction = "NW";
-            else if(yMove == 0) direction = "W";
-            else if(yMove > 0) direction = "SW";
+            if (yMove < 0) direction = "NW";
+            else if (yMove == 0) direction = "W";
+            else if (yMove > 0) direction = "SW";
 
 
             int tx = (int) (x + xMove + bounds.x) / Tile.TILE_WIDTH; // tx - gdzie chcemy sie ruszyc (lewy kraniec)
 
-            if(!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT)  // lewy gory rog
-            && !collisionWithTile(tx, (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT))// lewy dolny rog
-                {
-                    // jesli nie ma kolizji w lewym gornym ani w lewym dolnym rogu, mozesz isc w prawo
-                    x += xMove;
-                } else{
-                    x = tx * Tile.TILE_WIDTH + Tile.TILE_WIDTH - bounds.x;
-                }
+            if (!collisionWithTile(tx, (int) (y + bounds.y) / Tile.TILE_HEIGHT)  // lewy gory rog
+                    && !collisionWithTile(tx, (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT))// lewy dolny rog
+            {
+                // jesli nie ma kolizji w lewym gornym ani w lewym dolnym rogu, mozesz isc w prawo
+                x += xMove;
+            } else {
+                x = tx * Tile.TILE_WIDTH + Tile.TILE_WIDTH - bounds.x;
+            }
 
         }
     }
@@ -88,58 +93,59 @@ public abstract class Creature extends Entity {
         if (yMove < 0) {
             // do gory
             // zwrot
-            if(xMove < 0) direction = "NW";
-            else if(xMove == 0) direction = "N";
-            else if(xMove > 0) direction = "NE";
+            if (xMove < 0) direction = "NW";
+            else if (xMove == 0) direction = "N";
+            else if (xMove > 0) direction = "NE";
 
 
             int ty = (int) (y + yMove + bounds.y) / Tile.TILE_HEIGHT; // ty - gdzie chcemy sie ruszyc (gorny kraniec)
 
             if (!collisionWithTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty) // lewy gorny rog
                     && !collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILE_HEIGHT, ty)) // prawy gorny rog
-                {
-                    // jesli nie ma kolizji w lewym gornym ani w prawym gornym rogu, moesz isc do gory
-                    y += yMove;
-                } else{
-                    y = ty * Tile.TILE_HEIGHT + Tile.TILE_HEIGHT - bounds.y;
-                }
-            } else if (yMove > 0) {
+            {
+                // jesli nie ma kolizji w lewym gornym ani w prawym gornym rogu, moesz isc do gory
+                y += yMove;
+            } else {
+                y = ty * Tile.TILE_HEIGHT + Tile.TILE_HEIGHT - bounds.y;
+            }
+        } else if (yMove > 0) {
             // w dol
             // zwrot
-            if(xMove < 0) direction = "SW";
-            else if(xMove == 0) direction = "S";
-            else if(xMove > 0) direction = "SE";
+            if (xMove < 0) direction = "SW";
+            else if (xMove == 0) direction = "S";
+            else if (xMove > 0) direction = "SE";
 
 
             int ty = (int) (y + yMove + bounds.y + bounds.height) / Tile.TILE_HEIGHT; // ty - gdzie chcemy sie ruszyc (dolny kraniec)
 
-            if(!collisionWithTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty) // lewy dolny rog
-            && !collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILE_HEIGHT, ty)) // prawy dolny rog
-                {
-                    // jesli nie ma kolizji w lewym dolnym ani w prawym dolnym rogu, mozesz isc w dol
-                    y += yMove;
-                } else{
-                    y = ty * Tile.TILE_HEIGHT - bounds.y - bounds.height - 1;
-                }
+            if (!collisionWithTile((int) (x + bounds.x) / Tile.TILE_WIDTH, ty) // lewy dolny rog
+                    && !collisionWithTile((int) (x + bounds.x + bounds.width) / Tile.TILE_HEIGHT, ty)) // prawy dolny rog
+            {
+                // jesli nie ma kolizji w lewym dolnym ani w prawym dolnym rogu, mozesz isc w dol
+                y += yMove;
+            } else {
+                y = ty * Tile.TILE_HEIGHT - bounds.y - bounds.height - 1;
+            }
         }
     }
 
     // spowolnienie kiedy kreatura wejdzie do wody
-    public void speedInWater(int depth, float amount){
-        if(inWater((int)(x + bounds.x + bounds.width / 2) / Tile.TILE_WIDTH,
-                (int)(y + bounds.y + bounds.height / 2) / Tile.TILE_HEIGHT) >= depth
-                && inWater((int)(x + bounds.x + bounds.width / 2) / Tile.TILE_WIDTH,
-                (int)(y + bounds.y + bounds.height) / Tile.TILE_HEIGHT) >= depth){
-            speed = speed*amount;
+    public void speedInWater(int depth, float amount) {
+        if (inWater((int) (x + bounds.x + bounds.width / 2) / Tile.TILE_WIDTH,
+                (int) (y + bounds.y + bounds.height / 2) / Tile.TILE_HEIGHT) >= depth
+                && inWater((int) (x + bounds.x + bounds.width / 2) / Tile.TILE_WIDTH,
+                (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT) >= depth) {
+            speed = speed * amount;
         }
     }
 
     // czy tile na ktory chce wejsc jest solid?
-    protected boolean collisionWithTile(int x, int y){
+    protected boolean collisionWithTile(int x, int y) {
         return handler.getWorld().getTile(x, y).isSolid();
     }
 
-    protected int inWater(int x, int y){
+    // glebokosc
+    protected int inWater(int x, int y) {
         return handler.getWorld().getTile(x, y).getDepth();
     }
 

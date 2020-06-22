@@ -1,6 +1,5 @@
 package tilegame.gfx;
 
-import tilegame.Game;
 import tilegame.Handler;
 import tilegame.display.Display;
 import tilegame.entities.Entity;

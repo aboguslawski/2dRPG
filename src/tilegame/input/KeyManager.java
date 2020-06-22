@@ -2,7 +2,6 @@ package tilegame.input;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.Key;
 
 // *** input ***
 
@@ -13,7 +12,7 @@ public class KeyManager implements KeyListener {
     private boolean[] keys;
     private boolean[] pressKeys;
     private boolean[] clickKeys;
-    public boolean up, down, left, right, run, sword, q;
+    public boolean up, down, left, right, run, sword, nextEntity, interactWithEntity;
 
     public KeyManager(){
         keys = new boolean[256];
@@ -26,9 +25,18 @@ public class KeyManager implements KeyListener {
         down = keys[KeyEvent.VK_DOWN];
         left = keys[KeyEvent.VK_LEFT];
         right = keys[KeyEvent.VK_RIGHT];
+
+        // aktywacja sprintu
         run = keys[KeyEvent.VK_SHIFT];
+
+        // wyciagniecie i schowanie broni
         sword = pressKeys[KeyEvent.VK_1];
-        q = keys[KeyEvent.VK_Q];
+
+        // zmiana obiektu
+        nextEntity = keys[KeyEvent.VK_Q];
+
+        // interakcja z obiektem
+        interactWithEntity = keys[KeyEvent.VK_E];
     }
 
     @Override

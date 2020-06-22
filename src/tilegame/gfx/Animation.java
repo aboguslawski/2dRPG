@@ -4,11 +4,17 @@ import java.awt.image.BufferedImage;
 
 public class Animation {
 
+    // szybkosc zmiany klatek i aktualna klatka
     private int speed, index;
+
+    // kontrola uplynietego czasu
     private long lastTime, timer;
+
+    // tablica wszystkich klatek dla danej animacji
     private BufferedImage[] frames;
 
-    public Animation(int speed, BufferedImage[] frames){
+    // konstruktor
+    public Animation(int speed, BufferedImage[] frames) {
         this.speed = speed;
         this.frames = frames;
         index = 0;
@@ -16,20 +22,32 @@ public class Animation {
         timer = 0;
     }
 
-    public void tick(){
+    // tickuj w wyznaczonym czasie
+    public void tick() {
         timer += System.currentTimeMillis() - lastTime;
         lastTime = System.currentTimeMillis();
 
-        if(timer > speed){
+        // po uplycieciu ustalonego czasu nastepna klatka
+        if (timer > speed) {
             index++;
             timer = 0;
-            if(index >= frames.length){
+            if (index >= frames.length) {
                 index = 0;
             }
         }
     }
 
-    public BufferedImage getCurrentFrame(){
+    // GETTERS SETTERS
+
+    public BufferedImage getCurrentFrame() {
         return frames[index];
+    }
+
+    public int getIndex() {
+        return this.index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

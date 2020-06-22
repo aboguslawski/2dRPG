@@ -4,7 +4,7 @@ import tilegame.gfx.Assets;
 
 public class DeepWaterTile extends Tile {
 
-    public DeepWaterTile(int id){
+    public DeepWaterTile(int id) {
         super(Assets.deepWater, id);
     }
 
