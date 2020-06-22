@@ -4,7 +4,7 @@ import tilegame.Handler;
 import tilegame.display.Display;
 import tilegame.entities.EntityManager;
 import tilegame.entities.Player;
-import tilegame.entities.statics.StaticEntityHover;
+import tilegame.entities.statics.InteractionHover;
 import tilegame.gfx.Assets;
 import tilegame.gfx.DayNightCycle;
 import tilegame.tiles.Tile;
@@ -28,9 +28,10 @@ public class World {
     public World(Handler handler, String path, boolean surface, DayNightCycle cycle) {
         this.handler = handler;
         entityManager = new EntityManager(handler, new Player(handler, 100, 100, 20));
+//        player = entityManager.getPlayer();
 
         // ustaw wskaznik statycznych obiektow na graczu w zasiegu 50 pixeli
-        entityManager.setSeHover(new StaticEntityHover(handler, entityManager.getPlayer(), 50));
+//        player.setInteractionHover(new InteractionHover(handler, player));
 
 
         loadWorld(path);

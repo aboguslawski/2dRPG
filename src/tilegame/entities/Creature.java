@@ -1,10 +1,7 @@
 package tilegame.entities;
 
-import tilegame.Game;
 import tilegame.Handler;
 import tilegame.tiles.Tile;
-
-import java.awt.*;
 
 public abstract class Creature extends Entity {
 

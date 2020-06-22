@@ -1,8 +1,9 @@
 package tilegame.entities;
 
 import tilegame.Handler;
-import tilegame.gfx.Animation;
-import tilegame.gfx.Assets;
+import tilegame.entities.mobs.AttackHover;
+import tilegame.entities.statics.InteractionHover;
+import tilegame.gfx.MobAnimation;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,7 +13,10 @@ public class Player extends Creature {
     // ANIMATIONS
 
     // animacje ruchu
-    private Animation animS, animN, animW, animE, animNW, animNE, animSE, animSW;
+    private MobAnimation walkingAnim, swordAnim;
+
+    private InteractionHover interactionHover;
+    private AttackHover attackHover;
 
     // wczesniejszy stan aktywowanych klawiszy
     private boolean sword, prevQ, prevE;
@@ -23,6 +27,9 @@ public class Player extends Creature {
         this.prevQ = false;
         this.prevE = false;
 
+        interactionHover = new InteractionHover(handler, this);
+        attackHover = new AttackHover(handler, this);
+
         // wspolrzedne kolizji gracza
         // bez tego pokryje sie caly obraz gracza
         bounds.x = 8;
@@ -31,32 +38,46 @@ public class Player extends Creature {
         bounds.height = 32;
 
         // Animation
-        animS = new Animation(200, Assets.playerS);
-        animN = new Animation(200, Assets.playerN);
-        animW = new Animation(200, Assets.playerW);
-        animE = new Animation(200, Assets.playerE);
-        animNW = new Animation(200, Assets.playerNW);
-        animNE = new Animation(200, Assets.playerNE);
-        animSE = new Animation(200, Assets.playerSE);
-        animSW = new Animation(200, Assets.playerSW);
+
+        walkingAnim = new MobAnimation("/res/textures/playerWalk.png", 250, 4, 64, 128);
+        swordAnim = new MobAnimation("/res/textures/playerSword.png", 250, 4, 64, 128);
+
 
     }
 
     @Override
     public void tick() {
         //Animations
-        animS.tick();
-        animN.tick();
-        animW.tick();
-        animE.tick();
-        animNW.tick();
-        animNE.tick();
-        animSE.tick();
-        animSW.tick();
+        walkingAnim.tick();
+        swordAnim.tick();
+
+        interactionHover.tick();
+        if(this.sword){
+            attackHover.tick();
+        }
+
         //Movement
         getInput();
         move(); // metoda z klasy Creature
         handler.getGameCamera().centerOnEntity(this); //wycentruj kamere na graczu
+    }
+
+    // renderowanie odpowiedniej animacji gracza
+    @Override
+    public void render(Graphics g) {
+
+        interactionHover.render(g);
+        if(this.sword){
+            attackHover.render(g);
+        }
+
+        // bron
+        if (this.sword)
+            drawPlayer(g, getCurrentAnimationFrame(swordAnim), x, y, width, height);
+
+            // zwykly ruch
+        else
+            drawPlayer(g, getCurrentAnimationFrame(walkingAnim), x, y, width, height);
     }
 
     // reakcje na dany klawisz
@@ -89,33 +110,20 @@ public class Player extends Creature {
 
         // zmiana zaznaczonego obiektu
         if (!prevQ && handler.getKeyManager().nextEntity) {
-            handler.getWorld().getEntityManager().getSeHover().nextEntity();
+            interactionHover.nextEntity();
+            attackHover.nextEntity();
         }
 
         // interakcja z zaznaczonym obiektem
         if (!prevE && handler.getKeyManager().interactWithEntity) {
-            if (handler.getWorld().getEntityManager().getSeHover().getHovered() != null)
-                handler.getWorld().getEntityManager().getSeHover().getHovered().interact();
+            if (interactionHover.getHovered() != null)
+                interactionHover.getHovered().interact();
         }
 
         // kontrola czy nastapila zmiana w przycisnieciu klawisza
         prevE = handler.getKeyManager().interactWithEntity;
         prevQ = handler.getKeyManager().nextEntity;
     }
-
-    // renderowanie odpowiedniej animacji gracza
-    @Override
-    public void render(Graphics g) {
-
-        // bron
-        if (this.sword)
-            drawPlayer(g, Assets.playerSword, x, y, width, height);
-
-            // zwykly ruch
-        else
-            drawPlayer(g, getCurrentAnimationFrame(), x, y, width, height);
-    }
-
 
     // brak przewidzianych interakcji gracza z samym soba?
     @Override
@@ -129,15 +137,27 @@ public class Player extends Creature {
                 (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
-    // ANIMACJA
-    private BufferedImage getCurrentAnimationFrame() {
-        if (this.direction.equals("W")) return animW.getCurrentFrame();
-        else if (this.direction.equals("E")) return animE.getCurrentFrame();
-        else if (this.direction.equals("N")) return animN.getCurrentFrame();
-        else if (this.direction.equals("S")) return animS.getCurrentFrame();
-        else if (this.direction.equals("NW")) return animNW.getCurrentFrame();
-        else if (this.direction.equals("NE")) return animNE.getCurrentFrame();
-        else if (this.direction.equals("SE")) return animSE.getCurrentFrame();
-        else return animSW.getCurrentFrame();
+    // klatka animacji
+    private BufferedImage getCurrentAnimationFrame(MobAnimation animation) {
+        if (this.direction.equals("W")) return animation.getW().getCurrentFrame();
+        else if (this.direction.equals("E")) return animation.getE().getCurrentFrame();
+        else if (this.direction.equals("N")) return animation.getN().getCurrentFrame();
+        else if (this.direction.equals("S")) return animation.getS().getCurrentFrame();
+        else if (this.direction.equals("NW")) return animation.getNw().getCurrentFrame();
+        else if (this.direction.equals("NE")) return animation.getNe().getCurrentFrame();
+        else if (this.direction.equals("SE")) return animation.getSe().getCurrentFrame();
+        else return animation.getSw().getCurrentFrame();
     }
+
+
+    // GETTERS SETTERS
+
+    public InteractionHover getInteractionHover() {
+        return interactionHover;
+    }
+
+    public void setInteractionHover(InteractionHover interactionHover) {
+        this.interactionHover = interactionHover;
+    }
+
 }

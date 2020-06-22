@@ -1,4 +1,4 @@
-package tilegame.entities.statics;
+package tilegame.entities.mobs;
 
 import tilegame.Handler;
 import tilegame.entities.Entity;
@@ -8,29 +8,18 @@ import tilegame.gfx.Assets;
 import java.awt.*;
 import java.util.ArrayList;
 
-// znacznik statycznych obiektow
-// oznacza statyczny obiekt z ktorym
-// mozna wejsc w interakcje i znajduje sie w zasiegu
-// pozwala zmienic wybrany obiekt <Q>
-// pozwala przeprowadzic na nim interakcje <E>
-
-public class StaticEntityHover {
+public class AttackHover {
 
     private Handler handler;
 
-    // gracz jest centrum przeszukiwanego obszaru
     private Player player;
 
-    // zasieg wykrywania
     private int pixelRange;
 
-    // to chyba nic nie robi
     private boolean on;
 
-    // lista obiektow w zasiegu
-    private ArrayList<Entity> staticEntitiesInRange;
+    private ArrayList<Entity> attackableEntitiesInRange;
 
-    // obiekt aktualnie oznaczony
     private Entity hovered;
 
     // rzeczy do timowania co ile ma sprawdzac obecnosc obiektu
@@ -38,49 +27,40 @@ public class StaticEntityHover {
     private long timer, lastTime;
     // aktualnie 250ms
 
-    public StaticEntityHover(Handler handler, Player player, int pixelRange) {
+    public AttackHover(Handler handler, Player player){
         this.handler = handler;
         this.player = player;
-        this.pixelRange = pixelRange;
+        this.pixelRange = 500;
         this.on = false;
         this.speed = 250;
         this.j = 0;
-        staticEntitiesInRange = new ArrayList<>();
+        attackableEntitiesInRange = new ArrayList<>();
         this.hovered = null;
         lastTime = System.currentTimeMillis();
         timer = 0;
     }
 
-    public void tick() {
+    public void tick(){
         timer += System.currentTimeMillis() - lastTime;
         lastTime = System.currentTimeMillis();
 
         if (timer >= speed)
+            attackableEntitiesInRange = checkForAttackableEntities();
 
-            // przeszukuje i zwraca tablice dostepnych obiektow
-            staticEntitiesInRange = checkForStaticEntities();
-
-        // jesli jakis obiekt znajduje sie na liscie
-        if (!staticEntitiesInRange.isEmpty()) {
-
-            // zwroc obiekt znajdujacy sie na j miejscu w liscie
-            hovered = staticEntitiesInRange.get(j % staticEntitiesInRange.size());
+        if(!attackableEntitiesInRange.isEmpty()){
+            hovered = attackableEntitiesInRange.get(j % attackableEntitiesInRange.size());
         }
-
     }
 
-    public void render(Graphics g) {
-
-        // jesli na liscie znajduje sie jakis obiekt -> jakis obiekt jest oznaczony
-        // to podswietlenie tego obiektu
-        if (!staticEntitiesInRange.isEmpty())
-            g.drawImage(Assets.hover, (int) (hovered.getX() - 5 - handler.getGameCamera().getxOffset()),
-                    (int) (hovered.getY() + hovered.getHeight() - 10 - handler.getGameCamera().getyOffset()), null);
+    public void render(Graphics g){
+        if(!attackableEntitiesInRange.isEmpty()){
+            g.drawImage(Assets.attackHover, (int) (hovered.getX() - handler.getGameCamera().getxOffset()),
+                    (int) (hovered.getY() + hovered.getHeight() - handler.getGameCamera().getyOffset()), null);
+        }
     }
 
-    // wrzuca wszystkie obiekty w zasiegu do listy i zwraca ta liste
-    private ArrayList<Entity> checkForStaticEntities() {
-        ArrayList<Entity> staticEntities = new ArrayList<Entity>();
+    private ArrayList<Entity> checkForAttackableEntities(){
+        ArrayList<Entity> entities = new ArrayList<>();
 
         // max (0,x) zapobiega sprawdzaniu poza granicami mapy
         int xStart = Math.max(0, (int) player.getX() - pixelRange);
@@ -98,12 +78,12 @@ public class StaticEntityHover {
 
                 // jesli zwrocono obiekt niebedacy nullem i mozna wejsc z nim w interakcje
                 // dodaj go do zwracanej listy
-                if (e != null && e.isInteraction()) {
-                    staticEntities.add(e);
+                if (e != null && e.isAttackable()) {
+                    entities.add(e);
                 }
             }
         }
-        return staticEntities;
+        return entities;
     }
 
     // nastepny indeks
@@ -116,4 +96,5 @@ public class StaticEntityHover {
     public Entity getHovered() {
         return hovered;
     }
+
 }

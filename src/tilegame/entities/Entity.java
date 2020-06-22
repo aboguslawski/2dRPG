@@ -11,7 +11,7 @@ public abstract class Entity {
     protected int width, height;
     protected Rectangle bounds; // prostokat powodujacy kolizje
     protected boolean interaction; // czy mozna wejsc z entity w interakcje
-    protected String type;
+    protected boolean attackable;
 
     public Entity(Handler handler, float x, float y, int width, int height){
         this.handler = handler;
@@ -20,9 +20,7 @@ public abstract class Entity {
         this.width = width;
         this.height = height;
         this.interaction = false;
-        this.type = "static";
-        // typy:
-        //static, enemy, npc
+        this.attackable = false;
 
         bounds = new Rectangle(0,0,width,height); // domyslnie entity powoduje kolizje caloscia
     }
@@ -74,6 +72,10 @@ public abstract class Entity {
 
     // getters setters
 
+    public boolean isAttackable(){
+        return this.attackable;
+    }
+
     public void setX(float x) {
         this.x = x;
     }
@@ -106,5 +108,7 @@ public abstract class Entity {
         return height;
     }
 
-
+    public Rectangle getBounds() {
+        return bounds;
+    }
 }

@@ -2,8 +2,9 @@ package tilegame.entities;
 
 import tilegame.Handler;
 import tilegame.display.Display;
+import tilegame.entities.mobs.AttackHover;
+import tilegame.entities.mobs.hostile.Enemy1;
 import tilegame.entities.statics.*;
-import tilegame.tiles.Tile;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,7 +14,6 @@ public class EntityManager {
 
     private Handler handler;
     private Player player;
-    private StaticEntityHover seHover;
 
     // wszystkie obiekty na mapie
     private ArrayList<Entity> entities;
@@ -49,14 +49,9 @@ public class EntityManager {
         // sortuj liste tak, zeby kazdy renderowal sie w odpowiedniej kolejnosci
         entities.sort(renderSorter);
 
-        // tickuj wskaznik
-        seHover.tick();
-
     }
 
     public void render(Graphics g) {
-
-        seHover.render(g);
 
         // ograniczenie renderu do zasiegu kamery
         int xStart = (int) (handler.getGameCamera().getxOffset() - Display.SCREEN_WIDTH);
@@ -80,6 +75,8 @@ public class EntityManager {
         addEntity(new House1(handler, 1170, 80));
         addEntity(new Lamp1(handler, 950, 450));
         addEntity(new Lamp1(handler, 690, 900));
+        addEntity(new Enemy1(handler, 1000, 1000));
+        addEntity(new Enemy1(handler, 1040,1120));
     }
 
     // dodanie obiektu do listy
@@ -100,14 +97,6 @@ public class EntityManager {
 
 
     // GETTERS SETTERS
-
-    public StaticEntityHover getSeHover() {
-        return seHover;
-    }
-
-    public void setSeHover(StaticEntityHover seHover) {
-        this.seHover = seHover;
-    }
 
     public Handler getHandler() {
         return handler;
