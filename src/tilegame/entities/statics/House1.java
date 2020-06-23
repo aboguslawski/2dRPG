@@ -36,4 +36,9 @@ public class House1 extends StaticEntity {
     public void interact() {
 
     }
+
+    @Override
+    public void die() {
+
+    }
 }

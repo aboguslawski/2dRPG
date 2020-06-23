@@ -144,11 +144,11 @@ public class Game implements Runnable {
                 ticks++;
                 delta--;
             }
-//            if(timer >= second){
-//                System.out.println("ticks and frames: " + ticks);
-//                ticks = 0;
-//                timer = 0;
-//            }
+            if(timer >= second){
+                System.out.println("ticks and frames: " + ticks);
+                ticks = 0;
+                timer = 0;
+            }
         }
 
         // jesli running == false

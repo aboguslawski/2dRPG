@@ -2,7 +2,6 @@ package tilegame.entities;
 
 import tilegame.Handler;
 import tilegame.display.Display;
-import tilegame.entities.mobs.AttackHover;
 import tilegame.entities.mobs.hostile.Enemy1;
 import tilegame.entities.statics.*;
 
@@ -44,6 +43,8 @@ public class EntityManager {
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
             e.tick();
+            if(!e.isActive())
+                entities.remove(e);
         }
 
         // sortuj liste tak, zeby kazdy renderowal sie w odpowiedniej kolejnosci
@@ -52,6 +53,15 @@ public class EntityManager {
     }
 
     public void render(Graphics g) {
+
+        int xStart2 = Math.max(0, (int) (player.getX() - handler.getGameCamera().getxOffset() - 500));
+        int xEnd2 = (int) (player.getX() - handler.getGameCamera().getxOffset() + 500);
+        int yStart2 = Math.max(0, (int) (player.getY() - handler.getGameCamera().getyOffset() - 500));
+        int yEnd2 = (int) (player.getY() - handler.getGameCamera().getyOffset() + 500);
+
+//        g.setColor(Color.black);
+//        g.fillRect(xStart2, yStart2, xEnd2 - xStart2 ,yEnd2 - yStart2);
+
 
         // ograniczenie renderu do zasiegu kamery
         int xStart = (int) (handler.getGameCamera().getxOffset() - Display.SCREEN_WIDTH);
@@ -72,9 +82,12 @@ public class EntityManager {
     private void init() {
         addEntity(new TorchStand(handler, 500, 500));
         addEntity(new TorchStand(handler, 530, 510));
+        addEntity(new TorchStand(handler, 520, 520));
         addEntity(new House1(handler, 1170, 80));
         addEntity(new Lamp1(handler, 950, 450));
         addEntity(new Lamp1(handler, 690, 900));
+        addEntity(new Enemy1(handler, 1100,1100));
+        addEntity(new Enemy1(handler, 1200, 1100));
         addEntity(new Enemy1(handler, 1000, 1000));
         addEntity(new Enemy1(handler, 1040,1120));
     }

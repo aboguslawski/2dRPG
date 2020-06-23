@@ -5,6 +5,9 @@ import tilegame.gfx.Assets;
 
 import java.awt.*;
 
+
+// testowy przeciwnik
+
 public class Enemy1 extends HostileMob {
 
     public Enemy1(Handler handler, float x, float y) {
@@ -31,6 +34,11 @@ public class Enemy1 extends HostileMob {
 
     @Override
     public void interact() {
+
+    }
+
+    @Override
+    public void die() {
 
     }
 }

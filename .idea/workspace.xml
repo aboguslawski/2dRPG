@@ -2,22 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="499ea011-ea4e-4aa0-ae5c-ad4670a556b7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/tilegame/entities/mobs/AttackHover.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/tilegame/entities/mobs/Mob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/tilegame/entities/mobs/hostile/Enemy1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/tilegame/entities/mobs/hostile/HostileMob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/tilegame/gfx/MobAnimation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/RPG/res/textures/hover.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/res/textures/hover.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tilegame/entities/Creature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/Creature.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tilegame/entities/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/Entity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tilegame/entities/EntityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/EntityManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tilegame/entities/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/statics/StaticEntityHover.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/statics/InteractionHover.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tilegame/gfx/Assets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/gfx/Assets.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tilegame/worlds/World.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/worlds/World.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/mobs/AttackHover.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/mobs/AttackHover.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/mobs/Mob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/mobs/Mob.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/mobs/hostile/Enemy1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/mobs/hostile/Enemy1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/mobs/hostile/HostileMob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/mobs/hostile/HostileMob.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/statics/House1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/statics/House1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/statics/InteractionHover.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/statics/InteractionHover.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/statics/Lamp1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/statics/Lamp1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/statics/TorchStand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/statics/TorchStand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/input/KeyManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/input/KeyManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/states/MenuState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/states/MenuState.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

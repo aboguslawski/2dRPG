@@ -51,4 +51,9 @@ public class TorchStand extends StaticEntity {
         // jesli obiekt jest aktywny, dezaktywuj go
         this.interacted = !this.interacted;
     }
+
+    @Override
+    public void die() {
+
+    }
 }

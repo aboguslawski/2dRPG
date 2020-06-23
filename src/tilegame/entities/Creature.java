@@ -5,19 +5,16 @@ import tilegame.tiles.Tile;
 
 public abstract class Creature extends Entity {
 
-    public static final int DEFAULT_HEALTH = 10; // domyslna ilosc punktow zycia
     public static final float DEFAULT_SPEED = 3.0f; // domyslna szybkosc poruszania sie po mapie
     public static final int DEFAULT_CREATURE_WIDTH = 48;
     public static final int DEFAULT_CREATURE_HEIGHT = 116;
 
     protected String direction; // strona swiata w ktora jest zwrocony
-    protected int health;
     protected float speed;
     protected float xMove, yMove;
 
     public Creature(Handler handler, float x, float y, int width, int height) {
         super(handler, x, y, width, height);
-        this.health = DEFAULT_HEALTH;
         this.speed = DEFAULT_SPEED;
         xMove = 0;
         yMove = 0;

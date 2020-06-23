@@ -34,16 +34,16 @@ public class InteractionHover {
     private Entity hovered;
 
     // rzeczy do timowania co ile ma sprawdzac obecnosc obiektu
-    private int speed, j; // j - indeks w liscie staticEntitiesInRange
+    private int refreshSpeed, j; // j - indeks w liscie staticEntitiesInRange
     private long timer, lastTime;
     // aktualnie 250ms
 
     public InteractionHover(Handler handler, Player player) {
         this.handler = handler;
         this.player = player;
-        this.pixelRange = 60;
+        this.pixelRange = 80;
         this.on = false;
-        this.speed = 250;
+        this.refreshSpeed = 250;
         this.j = 0;
         staticEntitiesInRange = new ArrayList<>();
         this.hovered = null;
@@ -55,7 +55,7 @@ public class InteractionHover {
         timer += System.currentTimeMillis() - lastTime;
         lastTime = System.currentTimeMillis();
 
-        if (timer >= speed)
+        if (timer >= refreshSpeed)
 
             // przeszukuje i zwraca tablice dostepnych obiektow
             staticEntitiesInRange = checkForStaticEntities();
@@ -66,6 +66,8 @@ public class InteractionHover {
             // zwroc obiekt znajdujacy sie na j miejscu w liscie
             hovered = staticEntitiesInRange.get(j % staticEntitiesInRange.size());
         }
+        // jesli nie ma zadnego obiektu to nie zwracaj nic
+        else hovered = null;
 
     }
 
@@ -109,6 +111,15 @@ public class InteractionHover {
     // nastepny indeks
     public void nextEntity() {
         j++;
+    }
+
+    // poprzedni indeks
+    public void prevEntity(){
+        // jesli aktualnie wskazuje na 0 to zamiast dawac wartosci ujemne to wskakuje na koniec listy
+        if(staticEntitiesInRange.size() > 0){
+            if(j == 0) j = staticEntitiesInRange.size() - 1;
+            else j--;
+        }
     }
 
     // GETTERS SETTERS

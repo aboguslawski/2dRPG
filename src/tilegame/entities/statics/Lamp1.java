@@ -40,5 +40,9 @@ public class Lamp1 extends StaticEntity {
 
     }
 
+    @Override
+    public void die() {
+
+    }
 
 }

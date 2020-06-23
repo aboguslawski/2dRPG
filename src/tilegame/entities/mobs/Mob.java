@@ -10,6 +10,7 @@ public abstract class Mob extends Creature {
     public Mob(Handler handler, float x, float y, int width, int height) {
         super(handler, x, y, width, height);
 
+        // mozna atakowac wszystkie moby nawet jesli nie sa agresywne
         this.hostile = false;
         this.attackable = true;
     }
