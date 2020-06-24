@@ -3,7 +3,7 @@ package tilegame.entities.mobs;
 import tilegame.Handler;
 import tilegame.display.Display;
 import tilegame.entities.Entity;
-import tilegame.entities.Player;
+import tilegame.entities.player.Player;
 import tilegame.gfx.Assets;
 
 import java.awt.*;
@@ -40,7 +40,7 @@ public class AttackHover {
         this.handler = handler;
         this.player = player;
         this.pixelRange = 500;
-        this.refreshSpeed = 250;
+        this.refreshSpeed = 100;
         this.j = 0;
         attackableEntitiesInRange = new ArrayList<>();
         this.hovered = null;
@@ -79,7 +79,7 @@ public class AttackHover {
 
     // przeszukuje kwadratowy teren wokol gracza w zasiegu i
     // zwraca liste aktualnie znajdujacych sie w tym terenie obiektow do zaatakowania
-    private ArrayList<Entity> checkForAttackableEntities2() {
+    private ArrayList<Entity> checkForAttackableEntitiesOld() {
         ArrayList<Entity> entities = new ArrayList<>();
 
         // max (0,x) zapobiega sprawdzaniu poza granicami mapy
@@ -106,6 +106,10 @@ public class AttackHover {
         return entities;
     }
 
+    // nowa funkcja
+
+    // zwraca liste obiektow do zaatakowania
+    // sprawdza kazdy obiekt i zwraca te mieszczace sie w granicach zasiegu i mozliwe do zaatakowania
     private ArrayList<Entity> checkForAttackableEntities() {
 
         // array list ktora zostanie zwrocona

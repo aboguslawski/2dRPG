@@ -2,7 +2,7 @@ package tilegame.entities.statics;
 
 import tilegame.Handler;
 import tilegame.entities.Entity;
-import tilegame.entities.Player;
+import tilegame.entities.player.Player;
 import tilegame.gfx.Assets;
 
 import java.awt.*;

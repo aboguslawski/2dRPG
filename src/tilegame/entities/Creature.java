@@ -10,12 +10,14 @@ public abstract class Creature extends Entity {
     public static final int DEFAULT_CREATURE_HEIGHT = 116;
 
     protected String direction; // strona swiata w ktora jest zwrocony
-    protected float speed;
+    protected float walkSpeed, runSpeed, actualSpeed;
     protected float xMove, yMove;
 
     public Creature(Handler handler, float x, float y, int width, int height) {
         super(handler, x, y, width, height);
-        this.speed = DEFAULT_SPEED;
+        this.walkSpeed = DEFAULT_SPEED;
+        this.runSpeed = DEFAULT_SPEED + 2f;
+        this.actualSpeed = walkSpeed;
         xMove = 0;
         yMove = 0;
         direction = "S";
@@ -129,7 +131,7 @@ public abstract class Creature extends Entity {
                 (int) (y + bounds.y + bounds.height / 2) / Tile.TILE_HEIGHT) >= depth
                 && inWater((int) (x + bounds.x + bounds.width / 2) / Tile.TILE_WIDTH,
                 (int) (y + bounds.y + bounds.height) / Tile.TILE_HEIGHT) >= depth) {
-            speed = speed * amount;
+            walkSpeed = walkSpeed * amount;
         }
     }
 
@@ -179,11 +181,14 @@ public abstract class Creature extends Entity {
         this.health = health;
     }
 
-    public float getSpeed() {
-        return speed;
+    public float getWalkSpeed() {
+        return walkSpeed;
     }
 
-    public void setSpeed(float speed) {
-        this.speed = speed;
+    public void setWalkSpeed(float walkSpeed) {
+        this.walkSpeed = walkSpeed;
     }
+
+
+
 }

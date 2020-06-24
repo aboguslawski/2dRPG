@@ -29,13 +29,13 @@ public class Assets {
         deepWater = spritesheet.crop(TILE_WIDTH * 4, 0, TILE_WIDTH, TILE_HEIGHT);
 
         // maska
-        bkgdMask = ImageLoader.loadImage("/res/textures/mask.png");
+        bkgdMask = ImageLoader.loadImage("/res/textures/mask2.png");
 
         // cykl dnia i nocy
         dayNightCycle = cycleAnim();
 
         // static entities
-        torchStand = ImageLoader.loadImage("/res/textures/torchstand.png");
+        torchStand = ImageLoader.loadImage("/res/textures/torchstand.png")  ;
         torchStand2 = ImageLoader.loadImage("/res/textures/torchstand2.png");
         house1 = ImageLoader.loadImage("/res/textures/statics/house1.png");
         lamp1 = ImageLoader.loadImage("/res/textures/statics/lamp1.png");

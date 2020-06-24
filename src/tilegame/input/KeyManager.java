@@ -15,9 +15,9 @@ public class KeyManager implements KeyListener {
     public boolean up, down, left, right, run, sword, prevEntity, nextEntity, interactWithEntity, attack;
 
     public KeyManager(){
-        keys = new boolean[256];
-        pressKeys = new boolean[256];
-        clickKeys = new boolean[256];
+        keys = new boolean[512];
+        pressKeys = new boolean[512];
+        clickKeys = new boolean[512];
     }
 
     public void tick(){

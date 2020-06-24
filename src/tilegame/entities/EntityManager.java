@@ -3,6 +3,7 @@ package tilegame.entities;
 import tilegame.Handler;
 import tilegame.display.Display;
 import tilegame.entities.mobs.hostile.Enemy1;
+import tilegame.entities.player.Player;
 import tilegame.entities.statics.*;
 
 import java.awt.*;
