@@ -51,15 +51,16 @@ public class Player extends Creature {
     @Override
     public void tick() {
 
-        // tickuj aktualny stan
-        pstate.tick();
-
         // tickuj znacznik interakcji
         interactionHover.tick();
 
         // Movement
         getInput();
         move(); // metoda z klasy Creature
+
+        // tickuj aktualny stan
+        pstate.tick();
+
         handler.getGameCamera().centerOnEntity(this); //wycentruj kamere na graczu
     }
 
@@ -72,6 +73,9 @@ public class Player extends Creature {
 
         // renderuj aktualny stan
         pstate.render(g);
+
+        g.setColor(Color.black);
+        g.fillRect((int)(x + bounds.x - handler.getGameCamera().getxOffset()), (int)(y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
     }
 
     // reakcje na dany klawisz
@@ -115,9 +119,11 @@ public class Player extends Creature {
         // zmiana zaznaczonego obiektu do interakcji
         if (!lastNextEntity && handler.getKeyManager().nextEntity) {
             interactionHover.nextEntity();
+            weaponPS.getAttackHover().nextEntity();
         }
         if (!lastPrevEntity && handler.getKeyManager().prevEntity) {
             interactionHover.prevEntity();
+            weaponPS.getAttackHover().prevEntity();
         }
         // interakcja z zaznaczonym obiektem
         if (!lastInteract && handler.getKeyManager().interactWithEntity) {
@@ -174,5 +180,10 @@ public class Player extends Creature {
 
     public void setLastInteract(boolean lastInteract) {
         this.lastInteract = lastInteract;
+    }
+
+    public Rectangle getPlayerRect(){
+        return new Rectangle((int) (x - handler.getGameCamera().getxOffset()),
+                (int) (y - handler.getGameCamera().getyOffset()), width, height);
     }
 }

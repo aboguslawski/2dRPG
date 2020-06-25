@@ -21,13 +21,12 @@ public class Enemy1 extends HostileMob {
 
     @Override
     public void tick() {
-
+        super.tick();
     }
 
     @Override
     public void render(Graphics g) {
-//        drawBounds(g);
-
+//        super.render(g);
         g.drawImage(Assets.enemy1, (int) (x - handler.getGameCamera().getxOffset()) ,
                 (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }

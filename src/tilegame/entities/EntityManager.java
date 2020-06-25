@@ -87,10 +87,10 @@ public class EntityManager {
         addEntity(new House1(handler, 1170, 80));
         addEntity(new Lamp1(handler, 950, 450));
         addEntity(new Lamp1(handler, 690, 900));
-        addEntity(new Enemy1(handler, 1100,1100));
-        addEntity(new Enemy1(handler, 1200, 1100));
-        addEntity(new Enemy1(handler, 1000, 1000));
-        addEntity(new Enemy1(handler, 1040,1120));
+        addEntity(new Enemy1(handler, 300,400));
+        addEntity(new Enemy1(handler, 400, 300));
+        addEntity(new Enemy1(handler, 500, 100));
+        addEntity(new Enemy1(handler, 140,220));
     }
 
     // dodanie obiektu do listy

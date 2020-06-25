@@ -1,6 +1,7 @@
 package tilegame.entities.player;
 
 import tilegame.Handler;
+import tilegame.entities.Entity;
 import tilegame.gfx.MobAnimation;
 
 import java.awt.*;
@@ -69,6 +70,41 @@ public abstract class PState {
                 return animation.getSe().getCurrentFrame();
             default:
                 return animation.getSw().getCurrentFrame();
+        }
+    }
+
+    protected void focusDirection(Entity e) {
+
+        if (e.getX() <= player.getX() - 10 && e.getY() <= player.getY() - 10) {
+            player.setDirection("NW");
+        } else if (e.getX() >= player.getX() + 10 && e.getY() <= player.getY() - 10) {
+            player.setDirection("NE");
+        } else if (e.getX() >= player.getX() + 10 && e.getY() >= player.getY() + 10) {
+            player.setDirection("SE");
+        } else if (e.getX() <= player.getX() - 10 && e.getY() >= player.getY() + 10) {
+            player.setDirection("SW");
+        } else if (e.getX() < player.getX() + 10 && e.getX() > player.getX() - 10 && e.getY() <= player.getY() - 10) {
+            player.setDirection("N");
+        } else if (e.getX() >= player.getX() + 10 && e.getY() > player.getY() - 10 && e.getY() < player.getY() + 10) {
+            player.setDirection("E");
+        } else if (e.getX() < player.getX() + 10 && e.getX() > player.getX() - 10 && e.getY() >= player.getY() + 10) {
+            player.setDirection("S");
+        } else if (e.getX() <= player.getX() - 10 && e.getY() > player.getY() - 10 && e.getY() < player.getY() + 10) {
+            player.setDirection("W");
+        } else {
+            if (Math.abs(player.getX() - e.getX()) >= Math.abs(player.getY() - e.getY())) {
+                if (e.getX() >= player.getX()) {
+                    player.setDirection("E");
+                } else {
+                    player.setDirection("W");
+                }
+            } else {
+                if (e.getY() >= player.getY()) {
+                    player.setDirection("S");
+                } else {
+                    player.setDirection("N");
+                }
+            }
         }
     }
 

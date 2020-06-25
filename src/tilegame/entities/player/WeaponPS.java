@@ -11,20 +11,29 @@ import java.awt.*;
 
 public class WeaponPS extends PState {
 
+    private static final int FORWARD_ATTACK = 1;
+    private static final int LEFT_ATTACK = 2;
+    private static final int RIGHT_ATTACK = 3;
+    private static final int BLOCK = 4;
+
+    private MobAnimation attack, prep;
+
     // attack speed
-    private long lastAttackTimer, attackCooldown = 400, attackTimer = attackCooldown;
+    private long lastAttackTimer, attackCooldown = 200, attackTimer = attackCooldown;
 
     // atak
     private AttackHover attackHover;
 
     // zasieg ataku
-    private int attackRange;
+    private int attackRange, previousAttack;
 
     public WeaponPS(Handler handler, Player player) {
         super(handler, player);
 
         // animacje
         walk = new MobAnimation("/res/textures/playerSword.png", 250, 4, 64, 128);
+        attack = new MobAnimation("/res/textures/playerMeeleAttack.png", 250, 1, 64, 128);
+        prep = new MobAnimation("/res/textures/attackPrep.png", 250, 1, 64, 128);
 
         // inicjowana animacja
         animation = walk;
@@ -44,6 +53,9 @@ public class WeaponPS extends PState {
     public void tick() {
         super.tick();
         attackHover.tick();
+        player.setLastInteract(handler.getKeyManager().interactWithEntity);
+        player.setLastPrevEntity(handler.getKeyManager().prevEntity);
+        player.setLastNextEntity(handler.getKeyManager().nextEntity);
     }
 
     @Override
@@ -55,28 +67,71 @@ public class WeaponPS extends PState {
     @Override
     protected void getInput() {
 
-        // zmiana zaznaczonego obiektu
-        if (!player.isLastNextEntity() && handler.getKeyManager().nextEntity) {
-            attackHover.nextEntity();
-        }
-        if (!player.isLastPrevEntity() && handler.getKeyManager().prevEntity) {
-            attackHover.prevEntity();
-        }
+        animation = walk;
+        this.walkSpeed = 2.5f;
+        this.runSpeed = 4f;
 
         // jesli wcisnieto przycisk atakowania
         if (handler.getKeyManager().attack) {
 
+//            animation = prep;
+            this.walkSpeed = 1f;
+            this.runSpeed = 1f;
+
             // jesli jest ktos oznaczony czerwnoym hoverem
             if (attackHover.getHovered() != null) {
 
-                // wykonaj atak na oznaczonym przeciwniku
-                makeAttack(attackHover.getHovered());
+                focusDirection(attackHover.getHovered());
+
+                if (handler.getKeyManager().atForward) {
+                    // wykonaj atak na oznaczonym przeciwniku
+                    makeForwardAttack(attackHover.getHovered());
+                }
+                else if(handler.getKeyManager().atLeft){
+                    System.out.println("dir przed " + player.getDirection());
+                    makeLeftAttack(attackHover.getHovered());
+                    System.out.println("dir po " + player.getDirection());
+                }
+                else if(handler.getKeyManager().atRight){
+                    System.out.println("dir przed " + player.getDirection());
+                    makeRightAttack(attackHover.getHovered());
+                    System.out.println("dir po " + player.getDirection());
+                }
+
+
+                player.move();
+
             }
         }
     }
 
     // wykonaj atak na przeslanym obiekcie
     private void makeAttack(Entity e) {
+
+        animation = attack;
+
+        // jesli roznica odleglosci pomiedzy graczem i obiektem jest mniejsza od zasiegu ataku, zran obiekt
+        if (Math.abs(e.getX() - player.getX()) <= attackRange
+                && Math.abs(e.getY() - player.getY()) <= attackRange) {
+            e.hurt(4);
+        }
+
+        // reset timera po wykonanym ataku
+        attackTimer = 0;
+
+        if (e.getX() >= player.getX()) {
+            player.setxMove(5);
+        } else player.setxMove(-5);
+        if (e.getY() >= player.getY()) {
+            player.setyMove(5);
+        } else player.setyMove(-5);
+
+        System.out.println("attack, left hp" + e.getHealth());
+
+    }
+
+    // wykonaj atak na przeslanym obiekcie
+    private void makeForwardAttack(Entity e) {
 
         // odliczanie do nastepnego ataku
         attackTimer += System.currentTimeMillis() - lastAttackTimer;
@@ -88,17 +143,46 @@ public class WeaponPS extends PState {
             return;
         }
 
-        // jesli roznica odleglosci pomiedzy graczem i obiektem jest mniejsza od zasiegu ataku, zran obiekt
-        if (Math.abs(e.getX() - player.getX()) <= attackRange
-                && Math.abs(e.getY() - player.getY()) <= attackRange) {
-            e.hurt(4);
-        }
-
-        // reset timera po wykonanym ataku
-        attackTimer = 0;
-
-        System.out.println("attack, left hp" + e.getHealth());
-
+        makeAttack(e);
+        if (e.getX() >= player.getX()) {
+            player.setxMove(20);
+        } else player.setxMove(-20);
+        if (e.getY() >= player.getY()) {
+            player.setyMove(20);
+        } else player.setyMove(-20);
     }
 
+    private void makeLeftAttack(Entity e){
+
+        // odliczanie do nastepnego ataku
+        attackTimer += System.currentTimeMillis() - lastAttackTimer;
+        lastAttackTimer = System.currentTimeMillis();
+
+        // jesli zaatakowano za wczesnie, zresetuj czekanie do nastepnego ataku
+        if (attackTimer < attackCooldown) {
+            attackTimer = 0;
+            return;
+        }
+
+        makeAttack(e);
+    }
+
+    private void makeRightAttack(Entity e){
+
+        // odliczanie do nastepnego ataku
+        attackTimer += System.currentTimeMillis() - lastAttackTimer;
+        lastAttackTimer = System.currentTimeMillis();
+
+        // jesli zaatakowano za wczesnie, zresetuj czekanie do nastepnego ataku
+        if (attackTimer < attackCooldown) {
+            attackTimer = 0;
+            return;
+        }
+
+        makeAttack(e);
+    }
+
+    public AttackHover getAttackHover() {
+        return attackHover;
+    }
 }

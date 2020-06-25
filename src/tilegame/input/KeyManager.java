@@ -12,7 +12,8 @@ public class KeyManager implements KeyListener {
     private boolean[] keys;
     private boolean[] pressKeys;
     private boolean[] clickKeys;
-    public boolean up, down, left, right, run, sword, prevEntity, nextEntity, interactWithEntity, attack;
+    public boolean up, down, left, right, run, sword, prevEntity, nextEntity, interactWithEntity;
+    public boolean attack, atForward, atLeft, atRight, block;
 
     public KeyManager(){
         keys = new boolean[512];
@@ -40,8 +41,12 @@ public class KeyManager implements KeyListener {
         // interakcja z obiektem
         interactWithEntity = keys[KeyEvent.VK_F];
 
-        // atak
-        attack = keys[KeyEvent.VK_A];
+        // walka
+        attack = keys[KeyEvent.VK_SPACE];
+        atForward = keys[KeyEvent.VK_W];
+        atLeft = keys[KeyEvent.VK_A];
+        atRight = keys[KeyEvent.VK_D];
+        block = keys[KeyEvent.VK_S];
     }
 
     @Override

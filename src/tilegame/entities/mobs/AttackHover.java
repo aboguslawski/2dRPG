@@ -1,7 +1,6 @@
 package tilegame.entities.mobs;
 
 import tilegame.Handler;
-import tilegame.display.Display;
 import tilegame.entities.Entity;
 import tilegame.entities.player.Player;
 import tilegame.gfx.Assets;
@@ -31,30 +30,26 @@ public class AttackHover {
     // aktualnie oznaczony obiekt ktory jest zwracany przez ta klase
     private Entity hovered;
 
-    // rzeczy do timowania co ile ma sprawdzac obecnosc obiektu
-    private int refreshSpeed, j; // j - indeks w liscie staticEntitiesInRange
-    private long timer, lastTime;
-    // aktualnie 250ms
+    private int j; // j - indeks w liscie staticEntitiesInRange
+
+    private int xStart, xLen, yStart, yLen;
 
     public AttackHover(Handler handler, Player player) {
         this.handler = handler;
         this.player = player;
-        this.pixelRange = 500;
-        this.refreshSpeed = 100;
+        this.pixelRange = 750;
         this.j = 0;
         attackableEntitiesInRange = new ArrayList<>();
         this.hovered = null;
-        lastTime = System.currentTimeMillis();
-        timer = 0;
+
+        setBounds();
     }
 
     // sprawdzanie obszaru i aktualizowanie listy attackableEntitiesInRange
     public void tick() {
-        timer += System.currentTimeMillis() - lastTime;
-        lastTime = System.currentTimeMillis();
+        setBounds();
 
-        if (timer >= refreshSpeed)
-            attackableEntitiesInRange = checkForAttackableEntities();
+        attackableEntitiesInRange = checkForAttackableEntities();
 
         // hovered oznacza i zwraca aktualnie wybrany obiekt na pozycji j w liscie
         if (!attackableEntitiesInRange.isEmpty()) {
@@ -67,11 +62,14 @@ public class AttackHover {
     // jesli na liscie znajduje sie jakis obiekt renderuje pod wybranym obiektem czerwony hover
     public void render(Graphics g) {
 
-
         if (!attackableEntitiesInRange.isEmpty()) {
             g.drawImage(Assets.attackHover, (int) (hovered.getX() - handler.getGameCamera().getxOffset()),
                     (int) (hovered.getY() + hovered.getHeight() - handler.getGameCamera().getyOffset()), null);
         }
+
+
+        g.setColor(Color.cyan);
+        g.drawRect(xStart, yStart, xLen, yLen);
     }
 
 
@@ -83,13 +81,9 @@ public class AttackHover {
         ArrayList<Entity> entities = new ArrayList<>();
 
         // max (0,x) zapobiega sprawdzaniu poza granicami mapy
-        int xStart = Math.max(0, (int) player.getX() - pixelRange);
-        int xEnd = (int) player.getX() + pixelRange;
-        int yStart = Math.max(0, (int) player.getY() - pixelRange);
-        int yEnd = (int) player.getY() + pixelRange;
 
-        for (int i = xStart; i <= xEnd; i++) {
-            for (int j = yStart; j <= yEnd; j++) {
+        for (int i = xStart; i <= xLen; i++) {
+            for (int j = yStart; j <= yLen; j++) {
 
                 // sprawdza czy na danych kordach (i, j) znajduje sie jakis obiekt
                 // w przypadku gdy znajdzie obiekt zwraca go
@@ -119,20 +113,20 @@ public class AttackHover {
         ArrayList<Entity> worldEntities = handler.getWorld().getEntityManager().getEntities();
 
         // koordy ekranu
-        int xStart = (int) (handler.getGameCamera().getxOffset());
-        int xEnd = (int) (handler.getGameCamera().getxOffset() + Display.SCREEN_WIDTH);
-        int yStart = (int) (handler.getGameCamera().getyOffset());
-        int yEnd = (int) (handler.getGameCamera().getyOffset() + Display.SCREEN_HEIGHT);
+
 
         // loopuj wszystkie obiekty
         for (Entity e : worldEntities) {
 
             // jesli jest atakowalny
-            if(e.isAttackable()){
+            if (e.isAttackable()) {
+
+                Rectangle hoverBounds = new Rectangle(xStart, yStart, xStart + xLen, yStart + yLen);
+                Rectangle entityBounds = new Rectangle((int) (e.getX() - handler.getGameCamera().getxOffset()),
+                        (int) (e.getY() - handler.getGameCamera().getyOffset()), e.getWidth(), e.getHeight());
 
                 // jesli znajduje sie w obszarze ekranu dodaj do zwracanej arraylist
-                if (e.getX() >= xStart && e.getX() <= xEnd
-                        && e.getY() >= yStart && e.getY() <= yEnd){
+                if (hoverBounds.intersects(entityBounds)) {
                     attackableEntities.add(e);
                 }
             }
@@ -142,7 +136,8 @@ public class AttackHover {
 
     // nastepny indeks
     public void nextEntity() {
-        j++;
+        if (j >= attackableEntitiesInRange.size() - 1) j = 0;
+        else j++;
     }
 
     // poprzedni indeks
@@ -150,10 +145,17 @@ public class AttackHover {
 
         // jesli aktualnie wskazuje na 0 to zamiast dawac wartosci ujemne to wskakuje na koniec listy
         if (attackableEntitiesInRange.size() > 0) {
-            if (j == 0) j = attackableEntitiesInRange.size() - 1;
+            if (j <= 0) j = attackableEntitiesInRange.size() - 1;
             else j--;
         }
 
+    }
+
+    private void setBounds() {
+        xStart = (int) (player.getX() - handler.getGameCamera().getxOffset() - pixelRange);
+        yStart = (int) (player.getY() - handler.getGameCamera().getyOffset() - pixelRange / 2);
+        xLen = player.getWidth() + 2 * pixelRange;
+        yLen = player.getHeight() + 2 * pixelRange / 2;
     }
 
     // GETTERS SETTERS
