@@ -75,8 +75,8 @@ public abstract class Entity {
     public void hurt(int amt){
         health -= amt;
         if(health <= 0){
-            active = false;
             die();
+            active = false;
         }
     }
 

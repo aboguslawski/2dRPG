@@ -6,6 +6,7 @@ import tilegame.entities.EntityManager;
 import tilegame.entities.player.Player;
 import tilegame.gfx.Assets;
 import tilegame.gfx.DayNightCycle;
+import tilegame.items.ItemManager;
 import tilegame.tiles.Tile;
 import tilegame.utils.Utils;
 
@@ -23,10 +24,13 @@ public class World {
     private DayNightCycle cycle; // cykl dnia i nocy
     // Entities
     private EntityManager entityManager;
+    // Items
+    private ItemManager itemManager;
 
     public World(Handler handler, String path, boolean surface, DayNightCycle cycle) {
         this.handler = handler;
         entityManager = new EntityManager(handler, new Player(handler, 100, 100));
+        itemManager = new ItemManager(handler);
 //        player = entityManager.getPlayer();
 
         // ustaw wskaznik statycznych obiektow na graczu w zasiegu 50 pixeli
@@ -44,6 +48,7 @@ public class World {
     }
 
     public void tick() {
+        itemManager.tick();
         entityManager.tick();
     }
 
@@ -66,6 +71,8 @@ public class World {
         // maska
         renderMask(g, Assets.bkgdMask);
 
+
+        itemManager.render(g);
         //entities
         entityManager.render(g);
 
@@ -170,5 +177,21 @@ public class World {
 
     public int getHeight() {
         return this.height;
+    }
+
+    public Handler getHandler() {
+        return handler;
+    }
+
+    public void setHandler(Handler handler) {
+        this.handler = handler;
+    }
+
+    public ItemManager getItemManager() {
+        return itemManager;
+    }
+
+    public void setItemManager(ItemManager itemManager) {
+        this.itemManager = itemManager;
     }
 }

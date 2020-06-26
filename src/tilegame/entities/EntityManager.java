@@ -9,6 +9,7 @@ import tilegame.entities.statics.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 
 public class EntityManager {
 
@@ -39,13 +40,14 @@ public class EntityManager {
     // TICK RENDER
 
     public void tick() {
+        Iterator<Entity> it = entities.iterator();
 
         // tickuj kazda entity na liscie
-        for (int i = 0; i < entities.size(); i++) {
-            Entity e = entities.get(i);
+        while(it.hasNext()) {
+            Entity e = it.next();
             e.tick();
             if(!e.isActive())
-                entities.remove(e);
+                it.remove();
         }
 
         // sortuj liste tak, zeby kazdy renderowal sie w odpowiedniej kolejnosci

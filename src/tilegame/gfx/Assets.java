@@ -13,6 +13,8 @@ public class Assets {
     public static BufferedImage bkgdMask;
     // static entities
     public static BufferedImage torchStand, torchStand2, house1, lamp1, lamp1Night, interactionHover, attackHover;
+    // items
+    public static BufferedImage coins, mushroom;
 
     // player animations
     public static BufferedImage[] dayNightCycle, btStart;
@@ -55,6 +57,11 @@ public class Assets {
         // enemies
 
         enemy1 = ImageLoader.loadImage("/res/textures/entities/mobs/enemy.png");
+
+        // items
+
+        coins = ImageLoader.loadImage("/res/textures/items/coins.png");
+        mushroom = ImageLoader.loadImage("/res/textures/items/mushroom.png");
 
         // stare
         player = ImageLoader.loadImage("/res/textures/test.png");

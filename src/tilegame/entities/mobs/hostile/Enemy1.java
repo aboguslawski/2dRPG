@@ -2,8 +2,10 @@ package tilegame.entities.mobs.hostile;
 
 import tilegame.Handler;
 import tilegame.gfx.Assets;
+import tilegame.items.Item;
 
 import java.awt.*;
+import java.util.Random;
 
 
 // testowy przeciwnik
@@ -27,7 +29,7 @@ public class Enemy1 extends HostileMob {
     @Override
     public void render(Graphics g) {
 //        super.render(g);
-        g.drawImage(Assets.enemy1, (int) (x - handler.getGameCamera().getxOffset()) ,
+        g.drawImage(Assets.enemy1, (int) (x - handler.getGameCamera().getxOffset()),
                 (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
     }
 
@@ -39,5 +41,11 @@ public class Enemy1 extends HostileMob {
     @Override
     public void die() {
 
+        Random rn = new Random();
+
+        if (rn.nextInt() % 2 == 0)
+            handler.getWorld().getItemManager().addItem(Item.mushroomItem.createNew((int) x, (int) y));
+        else
+            handler.getWorld().getItemManager().addItem(Item.coinItem.createNew((int) x, (int) y));
     }
 }
