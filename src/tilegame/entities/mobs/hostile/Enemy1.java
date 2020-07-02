@@ -38,14 +38,9 @@ public class Enemy1 extends HostileMob {
 
     }
 
+    // po smierci dropi przedmiot
     @Override
     public void die() {
-
-        Random rn = new Random();
-
-        if (rn.nextInt() % 2 == 0)
-            handler.getWorld().getItemManager().addItem(Item.mushroomItem.createNew((int) x, (int) y));
-        else
             handler.getWorld().getItemManager().addItem(Item.coinItem.createNew((int) x, (int) y));
     }
 }

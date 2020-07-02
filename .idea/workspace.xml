@@ -2,13 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="499ea011-ea4e-4aa0-ae5c-ad4670a556b7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/tilegame/items/Item.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/tilegame/items/ItemManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tilegame/gfx/FontLoader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tilegame/gfx/Text.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tilegame/inventory/Inventory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tilegame/entities/EntityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/EntityManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tilegame/entities/mobs/hostile/Enemy1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/mobs/hostile/Enemy1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/player/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/player/WeaponPS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/player/WeaponPS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/entities/statics/InteractionHover.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/entities/statics/InteractionHover.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tilegame/gfx/Assets.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/gfx/Assets.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/input/KeyManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/input/KeyManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/items/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/items/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tilegame/items/ItemManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/items/ItemManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tilegame/worlds/World.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tilegame/worlds/World.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,6 +42,11 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.other" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Adam Bogusławski\Desktop\Programowanie\Projects\RPG\src\tilegame" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">

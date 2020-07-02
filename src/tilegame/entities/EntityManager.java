@@ -4,7 +4,9 @@ import tilegame.Handler;
 import tilegame.display.Display;
 import tilegame.entities.mobs.hostile.Enemy1;
 import tilegame.entities.player.Player;
-import tilegame.entities.statics.*;
+import tilegame.entities.statics.House1;
+import tilegame.entities.statics.Lamp1;
+import tilegame.entities.statics.TorchStand;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -43,10 +45,10 @@ public class EntityManager {
         Iterator<Entity> it = entities.iterator();
 
         // tickuj kazda entity na liscie
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             Entity e = it.next();
             e.tick();
-            if(!e.isActive())
+            if (!e.isActive())
                 it.remove();
         }
 
@@ -57,10 +59,10 @@ public class EntityManager {
 
     public void render(Graphics g) {
 
-        int xStart2 = Math.max(0, (int) (player.getX() - handler.getGameCamera().getxOffset() - 500));
-        int xEnd2 = (int) (player.getX() - handler.getGameCamera().getxOffset() + 500);
-        int yStart2 = Math.max(0, (int) (player.getY() - handler.getGameCamera().getyOffset() - 500));
-        int yEnd2 = (int) (player.getY() - handler.getGameCamera().getyOffset() + 500);
+//        int xStart2 = Math.max(0, (int) (player.getX() - handler.getGameCamera().getxOffset() - 500));
+//        int xEnd2 = (int) (player.getX() - handler.getGameCamera().getxOffset() + 500);
+//        int yStart2 = Math.max(0, (int) (player.getY() - handler.getGameCamera().getyOffset() - 500));
+//        int yEnd2 = (int) (player.getY() - handler.getGameCamera().getyOffset() + 500);
 
 //        g.setColor(Color.black);
 //        g.fillRect(xStart2, yStart2, xEnd2 - xStart2 ,yEnd2 - yStart2);
@@ -77,6 +79,9 @@ public class EntityManager {
                     && e.getY() >= yStart && e.getY() <= yEnd)
                 e.render(g);
         }
+
+        // po wyrenderowaniu wszystkich obiektow
+        player.postRender(g);
     }
 
     // METODY
@@ -89,10 +94,10 @@ public class EntityManager {
         addEntity(new House1(handler, 1170, 80));
         addEntity(new Lamp1(handler, 950, 450));
         addEntity(new Lamp1(handler, 690, 900));
-        addEntity(new Enemy1(handler, 300,400));
+        addEntity(new Enemy1(handler, 300, 400));
         addEntity(new Enemy1(handler, 400, 300));
-        addEntity(new Enemy1(handler, 500, 100));
-        addEntity(new Enemy1(handler, 140,220));
+//        addEntity(new Enemy1(handler, 500, 100));
+//        addEntity(new Enemy1(handler, 140,220));
     }
 
     // dodanie obiektu do listy

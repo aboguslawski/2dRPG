@@ -9,35 +9,40 @@ import java.util.Iterator;
 public class ItemManager {
 
     private Handler handler;
+
+    // wszystkie itemy lezace na ziemi
     private ArrayList<Item> items;
 
-    public ItemManager(Handler handler){
+    public ItemManager(Handler handler) {
         this.handler = handler;
         items = new ArrayList<Item>();
 
         init();
     }
 
-    private void init(){
-        addItem(Item.mushroomItem.createNew(200, 400));
+    private void init() {
+        addItem(Item.mushroomItem.createNew(1800, 400));
     }
 
-    public void tick(){
+    public void tick() {
         Iterator<Item> it = items.iterator();
-        while(it.hasNext()){
+
+        // tickuj kazdy item z listy
+        while (it.hasNext()) {
             Item i = it.next();
             i.tick();
-            if(i.getCount() == Item.PICKED_UP)
+            if (i.isPickedUp())
                 it.remove();
         }
     }
 
-    public void render(Graphics g){
-        for(Item i : items)
+    // renderuj kazdy item
+    public void render(Graphics g) {
+        for (Item i : items)
             i.render(g);
     }
 
-    public void addItem(Item i){
+    public void addItem(Item i) {
         i.setHandler(handler);
         items.add(i);
     }

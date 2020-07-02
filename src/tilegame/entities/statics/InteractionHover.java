@@ -62,9 +62,11 @@ public class InteractionHover {
 
         // jesli jakis obiekt znajduje sie na liscie
         if (!staticEntitiesInRange.isEmpty()) {
+            if(j < 0 || j >= staticEntitiesInRange.size())
+                j = 0;
 
             // zwroc obiekt znajdujacy sie na j miejscu w liscie
-            hovered = staticEntitiesInRange.get(j % staticEntitiesInRange.size());
+            hovered = staticEntitiesInRange.get(j);
         }
         // jesli nie ma zadnego obiektu to nie zwracaj nic
         else hovered = null;
@@ -111,14 +113,15 @@ public class InteractionHover {
     // nastepny indeks
     public void nextEntity() {
         j++;
+        if(j >= staticEntitiesInRange.size())
+            j = 0;
     }
 
     // poprzedni indeks
     public void prevEntity(){
-        // jesli aktualnie wskazuje na 0 to zamiast dawac wartosci ujemne to wskakuje na koniec listy
-        if(staticEntitiesInRange.size() > 0){
-            if(j == 0) j = staticEntitiesInRange.size() - 1;
-            else j--;
+        j--;
+        if(j < 0){
+            j = staticEntitiesInRange.size() - 1;
         }
     }
 

@@ -3,6 +3,7 @@ package tilegame.entities.player;
 import tilegame.Handler;
 import tilegame.entities.Creature;
 import tilegame.entities.statics.InteractionHover;
+import tilegame.inventory.Inventory;
 
 import java.awt.*;
 
@@ -20,14 +21,13 @@ public class Player extends Creature {
     private InteractionHover interactionHover;
 
     // wczesniejszy stan aktywowanych klawiszy
-    private boolean sword, lastNextEntity, lastPrevEntity, lastInteract;
+    private boolean sword;
+
+    protected Inventory inventory;
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         this.sword = false;
-        this.lastPrevEntity = false;
-        this.lastNextEntity = false;
-        this.lastInteract = false;
         this.health = 20;
 
         // inicjacja stanow
@@ -46,6 +46,8 @@ public class Player extends Creature {
         bounds.y = 90;
         bounds.width = 32;
         bounds.height = 32;
+
+        inventory = new Inventory(handler);
     }
 
     @Override
@@ -62,6 +64,9 @@ public class Player extends Creature {
         pstate.tick();
 
         handler.getGameCamera().centerOnEntity(this); //wycentruj kamere na graczu
+
+        // tickuj ekwipunek
+        inventory.tick();
     }
 
     // renderowanie odpowiedniej animacji gracza
@@ -74,14 +79,28 @@ public class Player extends Creature {
         // renderuj aktualny stan
         pstate.render(g);
 
-        g.setColor(Color.black);
-        g.fillRect((int)(x + bounds.x - handler.getGameCamera().getxOffset()), (int)(y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
+//        g.setColor(Color.black);
+//        g.fillRect((int)(x + bounds.x - handler.getGameCamera().getxOffset()), (int)(y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
+
+    }
+
+    // render wywolywany w innej kolejnosci niz podstawowy render gracza
+    public void postRender(Graphics g){
+
+        // render ekwipunku
+        inventory.render(g);
     }
 
     // reakcje na dany klawisz
     private void getInput() {
         xMove = 0;
         yMove = 0;
+
+        // po aktywowaniu ekwipunku przejdz do stanu chodzenia i nie reaguj na zadne dalsze instrukcje
+        if(inventory.isActive()){
+            pstate = walkPS;
+            return;
+        }
 
         // aktualna predkosc poruszania zalezna jest od stanu w ktorym znajduje sie gracz
         walkSpeed = pstate.getWalkSpeed();
@@ -109,32 +128,30 @@ public class Player extends Creature {
 
         // wyciagniecie broni i zmiana stanu
         if (handler.getKeyManager().sword) {
-            this.sword = true;
-            this.pstate = weaponPS;
-        } else {
-            this.sword = false;
-            this.pstate = walkPS;
+            if(!this.sword){
+                this.sword = true;
+                this.pstate = weaponPS;
+            }
+            else{
+                this.pstate = walkPS;
+                this.sword = false;
+            }
         }
 
         // zmiana zaznaczonego obiektu do interakcji
-        if (!lastNextEntity && handler.getKeyManager().nextEntity) {
+        if (handler.getKeyManager().nextEntity) {
             interactionHover.nextEntity();
             weaponPS.getAttackHover().nextEntity();
         }
-        if (!lastPrevEntity && handler.getKeyManager().prevEntity) {
+        if (handler.getKeyManager().prevEntity) {
             interactionHover.prevEntity();
             weaponPS.getAttackHover().prevEntity();
         }
         // interakcja z zaznaczonym obiektem
-        if (!lastInteract && handler.getKeyManager().interactWithEntity) {
+        if (handler.getKeyManager().interactWithEntity) {
             if (interactionHover.getHovered() != null)
                 interactionHover.getHovered().interact();
         }
-
-        // kontrola czy nastapila zmiana w przycisnieciu klawisza
-        lastInteract = handler.getKeyManager().interactWithEntity;
-        lastPrevEntity = handler.getKeyManager().prevEntity;
-        lastNextEntity = handler.getKeyManager().nextEntity;
     }
 
     // brak przewidzianych interakcji gracza z samym soba?
@@ -150,36 +167,21 @@ public class Player extends Creature {
 
     // GETTERS SETTERS
 
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
     public InteractionHover getInteractionHover() {
         return interactionHover;
     }
 
     public void setInteractionHover(InteractionHover interactionHover) {
         this.interactionHover = interactionHover;
-    }
-
-    public boolean isLastNextEntity() {
-        return lastNextEntity;
-    }
-
-    public void setLastNextEntity(boolean lastNextEntity) {
-        this.lastNextEntity = lastNextEntity;
-    }
-
-    public boolean isLastPrevEntity() {
-        return lastPrevEntity;
-    }
-
-    public void setLastPrevEntity(boolean lastPrevEntity) {
-        this.lastPrevEntity = lastPrevEntity;
-    }
-
-    public boolean isLastInteract() {
-        return lastInteract;
-    }
-
-    public void setLastInteract(boolean lastInteract) {
-        this.lastInteract = lastInteract;
     }
 
     public Rectangle getPlayerRect(){

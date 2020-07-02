@@ -25,7 +25,7 @@ public class WeaponPS extends PState {
     private AttackHover attackHover;
 
     // zasieg ataku
-    private int attackRange, previousAttack;
+    private int attackRange;
 
     public WeaponPS(Handler handler, Player player) {
         super(handler, player);
@@ -53,9 +53,6 @@ public class WeaponPS extends PState {
     public void tick() {
         super.tick();
         attackHover.tick();
-        player.setLastInteract(handler.getKeyManager().interactWithEntity);
-        player.setLastPrevEntity(handler.getKeyManager().prevEntity);
-        player.setLastNextEntity(handler.getKeyManager().nextEntity);
     }
 
     @Override
@@ -107,6 +104,9 @@ public class WeaponPS extends PState {
 
     // wykonaj atak na przeslanym obiekcie
     private void makeAttack(Entity e) {
+//
+//        if(player.inventory.isActive())
+//            return;
 
         animation = attack;
 

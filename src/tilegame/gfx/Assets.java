@@ -1,9 +1,16 @@
 package tilegame.gfx;
 
-import java.awt.*;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 
 public class Assets {
+
+    //++++++++++++++++++++++ FONTS
+
+    public static Font font50;
+
+    //+++++++++++++++++++++ IMAGES
+
 
     // spritesheet
     public static BufferedImage floor, wall, shallowWater, mediumWater, deepWater;
@@ -15,13 +22,21 @@ public class Assets {
     public static BufferedImage torchStand, torchStand2, house1, lamp1, lamp1Night, interactionHover, attackHover;
     // items
     public static BufferedImage coins, mushroom;
-
+    // inventory
+    public static BufferedImage inventoryScreen;
     // player animations
     public static BufferedImage[] dayNightCycle, btStart;
 
     public static final int TILE_WIDTH = 64, TILE_HEIGHT = 64;
 
     public static void init() {
+
+        // FONTS
+
+        font50 = FontLoader.loadFont("C:\\Users\\Adam Bogusławski\\Desktop\\Programowanie\\Projects\\RPG\\src\\res\\fonts\\cpc.ttf", 50);
+
+        // IMAGES
+
         Spritesheet spritesheet = new Spritesheet(ImageLoader.loadImage("/res/textures/Spritesheet.png"));
 
         floor = spritesheet.crop(0, 0, TILE_WIDTH, TILE_HEIGHT);
@@ -29,6 +44,10 @@ public class Assets {
         shallowWater = spritesheet.crop(TILE_WIDTH * 2, 0, TILE_WIDTH, TILE_HEIGHT);
         mediumWater = spritesheet.crop(TILE_WIDTH * 3, 0, TILE_WIDTH, TILE_HEIGHT);
         deepWater = spritesheet.crop(TILE_WIDTH * 4, 0, TILE_WIDTH, TILE_HEIGHT);
+
+        // inventory
+
+        inventoryScreen = ImageLoader.loadImage("/res/textures/inventory.png");
 
         // maska
         bkgdMask = ImageLoader.loadImage("/res/textures/mask2.png");

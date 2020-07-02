@@ -9,19 +9,31 @@ public class KeyManager implements KeyListener {
 
     // w miejscu keys[keycode] zmienia sie na true kiedy klawisz z danym keycode jest wywolany
 
-    private boolean[] keys;
-    private boolean[] pressKeys;
-    private boolean[] clickKeys;
+    private boolean[] keys, justPressed, cantPress;
     public boolean up, down, left, right, run, sword, prevEntity, nextEntity, interactWithEntity;
     public boolean attack, atForward, atLeft, atRight, block;
 
-    public KeyManager(){
+    public KeyManager() {
         keys = new boolean[512];
-        pressKeys = new boolean[512];
-        clickKeys = new boolean[512];
+        justPressed = new boolean[keys.length];
+        cantPress = new boolean[keys.length];
     }
 
-    public void tick(){
+    public void tick() {
+
+        // petla ktora sprawia ze kazda tablica dziala jak powinna
+        for (int i = 0; i < keys.length; i++) {
+            if (cantPress[i] && !keys[i]) {
+                cantPress[i] = false;
+            } else if (justPressed[i]) {
+                cantPress[i] = true;
+                justPressed[i] = false;
+            }
+            if (!cantPress[i] && keys[i]) {
+                justPressed[i] = true;
+            }
+        }
+
         // ruch
         up = keys[KeyEvent.VK_UP];
         down = keys[KeyEvent.VK_DOWN];
@@ -32,20 +44,20 @@ public class KeyManager implements KeyListener {
         run = keys[KeyEvent.VK_SHIFT];
 
         // wyciagniecie i schowanie broni
-        sword = pressKeys[KeyEvent.VK_1];
+        sword = justPressed[KeyEvent.VK_1];
 
         // zmiana obiektu
-        prevEntity = keys[KeyEvent.VK_Q];
-        nextEntity = keys[KeyEvent.VK_E];
+        prevEntity = justPressed[KeyEvent.VK_Q];
+        nextEntity = justPressed[KeyEvent.VK_E];
 
         // interakcja z obiektem
-        interactWithEntity = keys[KeyEvent.VK_F];
+        interactWithEntity = justPressed[KeyEvent.VK_F];
 
         // walka
         attack = keys[KeyEvent.VK_SPACE];
-        atForward = keys[KeyEvent.VK_W];
-        atLeft = keys[KeyEvent.VK_A];
-        atRight = keys[KeyEvent.VK_D];
+        atForward = justPressed[KeyEvent.VK_W];
+        atLeft = justPressed[KeyEvent.VK_A];
+        atRight = justPressed[KeyEvent.VK_D];
         block = keys[KeyEvent.VK_S];
     }
 
@@ -55,13 +67,22 @@ public class KeyManager implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
+        if (keyEvent.getKeyCode() < 0 || keyEvent.getKeyCode() >= keys.length)
+            return;
         keys[keyEvent.getKeyCode()] = true;
-        if(!pressKeys[keyEvent.getKeyCode()]) pressKeys[keyEvent.getKeyCode()] = true;
-        else pressKeys[keyEvent.getKeyCode()] = false;
     }
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {
+        if(keyEvent.getKeyCode() < 0 || keyEvent.getKeyCode() >= keys.length)
+            return;
         keys[keyEvent.getKeyCode()] = false;
+    }
+
+    // funkcja sprawdzajaca wcisniety klawisz
+    public boolean keyJustPressed(int keyCode) {
+        if (keyCode < 0 || keyCode >= keys.length)
+            return false;
+        return justPressed[keyCode];
     }
 }

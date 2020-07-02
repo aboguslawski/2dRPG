@@ -9,54 +9,94 @@ import java.awt.image.BufferedImage;
 
 public class Item {
 
+    // tablica wszystkich przedmiotow dostepnych w grze
     public static Item[] items = new Item[512];
+
+    // przedmioty
     public static Item coinItem = new Item(Assets.coins, "coins", 0);
     public static Item mushroomItem = new Item(Assets.mushroom, "mushroom", 1);
 
-    public static final int ITEMWIDTH = Tile.TILE_WIDTH, ITEMHEIGHT = Tile.TILE_HEIGHT, PICKED_UP = -1;
+    // szerokosc i wysokosc przedmiotu
+    // picked_up : jesli ilosc itemow w danym miejscu osiagnie -1, to znaczy ze zostal podniesiony i go tam juz nie ma
+    public static final int ITEMWIDTH = Tile.TILE_WIDTH, ITEMHEIGHT = Tile.TILE_HEIGHT;
 
     protected Handler handler;
-    protected BufferedImage texture;
-    protected String name;
-    protected final int id;
+    protected BufferedImage texture; // tekstura przedmiotu
+    protected String name; // nazwa przedmiotu
+    protected final int id; // id przedmiotu
+
+    protected Rectangle bounds; // granice przedmiotu lezacego na ziemi
 
     protected int x, y, count;
+    protected boolean pickedUp = false;
 
-    public Item(BufferedImage texture, String name, int id){
+    public Item(BufferedImage texture, String name, int id) {
         this.texture = texture;
         this.name = name;
         this.id = id;
         count = 1;
 
+        bounds = new Rectangle(x, y, ITEMWIDTH, ITEMHEIGHT);
+
         items[id] = this;
 
     }
 
-    public void tick(){}
+    public void tick() {
 
-    public void render(Graphics g, int x, int y){
-        if(handler == null)
+        // podnoszenie przedmiotu
+        if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(bounds)
+        && handler.getKeyManager().interactWithEntity){
+            pickedUp = true;
+            handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(this);
+        }
+    }
+
+    public void render(Graphics g, int x, int y) {
+        // jesli przedmiot nie jest podlaczany pod zaden handler, nie renderuj go
+        if (handler == null)
             return;
-        render(g, (int)(x - handler.getGameCamera().getxOffset()), (int)(y - handler.getGameCamera().getyOffset()));
+        render(g, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()));
     }
 
-    public void render(Graphics g){
-        g.drawImage(texture, x, y, ITEMWIDTH, ITEMHEIGHT, null);
+    public void render(Graphics g) {
+        g.drawImage(texture, (int) (x - handler.getGameCamera().getxOffset()), (int) (y - handler.getGameCamera().getyOffset()), ITEMWIDTH, ITEMHEIGHT, null);
     }
 
-    public Item createNew(int x, int y){
+    // testowa funkcja
+    public Item createNew(int count) {
+        Item i = new Item(texture, name, id);
+        i.setPickedUp(true);
+        i.setCount(count);
+
+        return i;
+    }
+
+    // tworzenie nowego przedmiotu na wskazanej pozycji
+    public Item createNew(int x, int y) {
         Item i = new Item(texture, name, id);
         i.setPosition(x, y);
 
         return i;
     }
 
-    public void setPosition(int x, int y){
+    public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
+        bounds.x = x;
+        bounds.y = y;
     }
 
     // GETTERS SETTERS
+
+
+    public boolean isPickedUp() {
+        return pickedUp;
+    }
+
+    public void setPickedUp(boolean pickedUp) {
+        this.pickedUp = pickedUp;
+    }
 
     public Handler getHandler() {
         return handler;

@@ -71,7 +71,7 @@ public class World {
         // maska
         renderMask(g, Assets.bkgdMask);
 
-
+        // items
         itemManager.render(g);
         //entities
         entityManager.render(g);
