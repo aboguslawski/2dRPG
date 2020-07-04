@@ -1,6 +1,6 @@
 package tilegame.gfx;
 
-import java.awt.Font;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Assets {
@@ -11,7 +11,6 @@ public class Assets {
 
     //+++++++++++++++++++++ IMAGES
 
-
     // spritesheet
     public static BufferedImage floor, wall, shallowWater, mediumWater, deepWater;
     // test player
@@ -19,11 +18,11 @@ public class Assets {
     // mask
     public static BufferedImage bkgdMask;
     // static entities
-    public static BufferedImage torchStand, torchStand2, house1, lamp1, lamp1Night, interactionHover, attackHover;
+    public static BufferedImage torchStand, torchStand2, house1, lamp1, lamp1Night, chest1, interactionHover, attackHover;
     // items
     public static BufferedImage coins, mushroom;
     // inventory
-    public static BufferedImage inventoryScreen;
+    public static BufferedImage inventoryScreen, lootScreen;
     // player animations
     public static BufferedImage[] dayNightCycle, btStart;
 
@@ -45,9 +44,10 @@ public class Assets {
         mediumWater = spritesheet.crop(TILE_WIDTH * 3, 0, TILE_WIDTH, TILE_HEIGHT);
         deepWater = spritesheet.crop(TILE_WIDTH * 4, 0, TILE_WIDTH, TILE_HEIGHT);
 
-        // inventory
+        // inventory and loot
 
         inventoryScreen = ImageLoader.loadImage("/res/textures/inventory.png");
+        lootScreen = ImageLoader.loadImage("/res/textures/lootWindow.png");
 
         // maska
         bkgdMask = ImageLoader.loadImage("/res/textures/mask2.png");
@@ -56,7 +56,7 @@ public class Assets {
         dayNightCycle = cycleAnim();
 
         // static entities
-        torchStand = ImageLoader.loadImage("/res/textures/torchstand.png")  ;
+        torchStand = ImageLoader.loadImage("/res/textures/torchstand.png");
         torchStand2 = ImageLoader.loadImage("/res/textures/torchstand2.png");
         house1 = ImageLoader.loadImage("/res/textures/statics/house1.png");
         lamp1 = ImageLoader.loadImage("/res/textures/statics/lamp1.png");
@@ -81,6 +81,9 @@ public class Assets {
 
         coins = ImageLoader.loadImage("/res/textures/items/coins.png");
         mushroom = ImageLoader.loadImage("/res/textures/items/mushroom.png");
+
+        // chest
+        chest1 = ImageLoader.loadImage("/res/textures/statics/chest.png");
 
         // stare
         player = ImageLoader.loadImage("/res/textures/test.png");

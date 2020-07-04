@@ -27,14 +27,12 @@ public class GameState extends State {
     @Override
     public void tick() {
         world.tick();
-
-        world.getCycle().tick();
-
+//        world.getCycle().tick();
     }
 
     @Override
     public void render(Graphics g) {
         world.render(g);
-        world.getCycle().render(g);
+//        world.getCycle().render(g);
     }
 }

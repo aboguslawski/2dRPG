@@ -12,13 +12,13 @@ public abstract class Entity {
     protected Handler handler;
     protected float x, y;
     protected int width, height;
-    protected int health;
+    protected int health, initHealth;
     protected boolean active = true; // po smierci - false
     protected Rectangle bounds; // prostokat powodujacy kolizje
     protected boolean interaction; // czy mozna wejsc z entity w interakcje
     protected boolean attackable; // czy mozna go zaatakowac
 
-    public Entity(Handler handler, float x, float y, int width, int height){
+    public Entity(Handler handler, float x, float y, int width, int height) {
         this.handler = handler;
         this.x = x;
         this.y = y;
@@ -28,24 +28,25 @@ public abstract class Entity {
         this.interaction = false;
         this.attackable = false;
 
-        this.health = DEFAULT_HEALTH;
+        this.initHealth = DEFAULT_HEALTH;
+        this.health = initHealth;
 
-        bounds = new Rectangle(0,0,width,height); // domyslnie entity powoduje kolizje caloscia
+        bounds = new Rectangle(0, 0, width, height); // domyslnie entity powoduje kolizje caloscia
     }
 
     // HELPERY DO KOLIZJI
 
-    public boolean checkEntityCollisions(float xOffset, float yOffset){
-        for(Entity e : handler.getWorld().getEntityManager().getEntities()){
+    public boolean checkEntityCollisions(float xOffset, float yOffset) {
+        for (Entity e : handler.getWorld().getEntityManager().getEntities()) {
 
             // nie sprawdzaj kolizji z samym soba
-            if(e.equals(this)){
+            if (e.equals(this)) {
                 continue;
             }
 
             // jesli nachodzi na inna entity, zachodzi kolizja
-            if(e.getCollisionBounds(0f, 0f).intersects(getCollisionBounds(xOffset, yOffset))){
-                return  true;
+            if (e.getCollisionBounds(0f, 0f).intersects(getCollisionBounds(xOffset, yOffset))) {
+                return true;
             }
         }
 
@@ -54,27 +55,27 @@ public abstract class Entity {
     }
 
     // zwraca prostokat kolizji obiektu
-    public Rectangle getCollisionBounds(float xOffset, float yOffset){
+    public Rectangle getCollisionBounds(float xOffset, float yOffset) {
         // prostokat wokol entity
-        return  new Rectangle((int) (x + bounds.x + xOffset), (int) (y + bounds.y + yOffset), bounds.width, bounds.height);
+        return new Rectangle((int) (x + bounds.x + xOffset), (int) (y + bounds.y + yOffset), bounds.width, bounds.height);
     }
 
     // czy mozna wejsc w interakcje z tym obiektem
-    public boolean isInteraction(){
+    public boolean isInteraction() {
         return this.interaction;
     }
 
     // pomocnicza funkcja rysujaca kolizje obiektu
-    public void drawBounds(Graphics g){
+    public void drawBounds(Graphics g) {
         g.setColor(Color.black);
         g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
                 (int) (y + bounds.y - handler.getGameCamera().getyOffset()),
                 bounds.width, bounds.height);
     }
 
-    public void hurt(int amt){
+    public void hurt(int amt) {
         health -= amt;
-        if(health <= 0){
+        if (health <= 0) {
             die();
             active = false;
         }
@@ -90,7 +91,7 @@ public abstract class Entity {
 
     // getters setters
 
-    public boolean isAttackable(){
+    public boolean isAttackable() {
         return this.attackable;
     }
 

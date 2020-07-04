@@ -1,11 +1,15 @@
 package tilegame.entities.player;
 
 import tilegame.Handler;
+import tilegame.display.Display;
 import tilegame.entities.Creature;
+import tilegame.entities.statics.Chest;
 import tilegame.entities.statics.InteractionHover;
 import tilegame.inventory.Inventory;
+import tilegame.inventory.LootWindow;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 // zreformowana klasa gracza
 // gracz przelacza sie pomiedzy stanami
@@ -23,22 +27,16 @@ public class Player extends Creature {
     // wczesniejszy stan aktywowanych klawiszy
     private boolean sword;
 
+    protected Chest looting;
+
     protected Inventory inventory;
+    protected LootWindow lootWindow;
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         this.sword = false;
         this.health = 20;
-
-        // inicjacja stanow
-        this.walkPS = new WalkPS(handler, this);
-        this.weaponPS = new WeaponPS(handler, this);
-
-        // gracz rodzi sie w stanie chodzenia
-        this.pstate = walkPS;
-
-        // inicjalizacja znacznika interakcji
-        interactionHover = new InteractionHover(handler, this);
+        initHealth = health;
 
         // wspolrzedne kolizji gracza
         // bez tego pokryje sie caly obraz gracza
@@ -47,11 +45,24 @@ public class Player extends Creature {
         bounds.width = 32;
         bounds.height = 32;
 
+        // inicjalizacja
+        this.walkPS = new WalkPS(handler, this);
+        this.weaponPS = new WeaponPS(handler, this);
+        this.pstate = walkPS;
+        interactionHover = new InteractionHover(handler, this);
         inventory = new Inventory(handler);
+        lootWindow = new LootWindow(handler);
+        looting = null;
     }
 
     @Override
     public void tick() {
+
+        if (looting != null) {
+            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)) {
+                looting = null;
+            }
+        }
 
         // tickuj znacznik interakcji
         interactionHover.tick();
@@ -63,10 +74,12 @@ public class Player extends Creature {
         // tickuj aktualny stan
         pstate.tick();
 
-        handler.getGameCamera().centerOnEntity(this); //wycentruj kamere na graczu
+        //wycentruj kamere na graczu
+        handler.getGameCamera().centerOnEntity(this);
 
         // tickuj ekwipunek
         inventory.tick();
+        lootWindow.tick();
     }
 
     // renderowanie odpowiedniej animacji gracza
@@ -85,10 +98,25 @@ public class Player extends Creature {
     }
 
     // render wywolywany w innej kolejnosci niz podstawowy render gracza
-    public void postRender(Graphics g){
+    public void postRender(Graphics g) {
 
-        // render ekwipunku
+        // render ekwipunku i okna lootu
         inventory.render(g);
+        lootWindow.render(g);
+
+        // pasek zdrowia
+        g.setColor(Color.red);
+        if (health > 0)
+            g.fillRect(20, Display.SCREEN_HEIGHT - 120 + 100 - (health * 100) / initHealth, 100, (health * 100) / initHealth);
+        g.setColor(Color.white);
+        g.drawRect(20, Display.SCREEN_HEIGHT - 120, 100, 100);
+
+        // pasek staminy
+        g.setColor(Color.yellow);
+        g.fillRect(140, Display.SCREEN_HEIGHT - 120, 100, 100);
+        g.setColor(Color.white);
+        g.drawRect(140, Display.SCREEN_HEIGHT - 120, 100, 100);
+
     }
 
     // reakcje na dany klawisz
@@ -97,7 +125,7 @@ public class Player extends Creature {
         yMove = 0;
 
         // po aktywowaniu ekwipunku przejdz do stanu chodzenia i nie reaguj na zadne dalsze instrukcje
-        if(inventory.isActive()){
+        if (inventory.isActive() || lootWindow.isActive()) {
             pstate = walkPS;
             return;
         }
@@ -128,11 +156,10 @@ public class Player extends Creature {
 
         // wyciagniecie broni i zmiana stanu
         if (handler.getKeyManager().sword) {
-            if(!this.sword){
+            if (!this.sword) {
                 this.sword = true;
                 this.pstate = weaponPS;
-            }
-            else{
+            } else {
                 this.pstate = walkPS;
                 this.sword = false;
             }
@@ -184,8 +211,24 @@ public class Player extends Creature {
         this.interactionHover = interactionHover;
     }
 
-    public Rectangle getPlayerRect(){
+    public Rectangle getPlayerRect() {
         return new Rectangle((int) (x - handler.getGameCamera().getxOffset()),
                 (int) (y - handler.getGameCamera().getyOffset()), width, height);
+    }
+
+    public Chest getLooting() {
+        return looting;
+    }
+
+    public void setLooting(Chest looting) {
+        this.looting = looting;
+    }
+
+    public LootWindow getLootWindow() {
+        return lootWindow;
+    }
+
+    public void setLootWindow(LootWindow lootWindow) {
+        this.lootWindow = lootWindow;
     }
 }

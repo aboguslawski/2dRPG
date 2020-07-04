@@ -4,9 +4,12 @@ import tilegame.Handler;
 import tilegame.display.Display;
 import tilegame.entities.mobs.hostile.Enemy1;
 import tilegame.entities.player.Player;
+import tilegame.entities.statics.Chest;
 import tilegame.entities.statics.House1;
 import tilegame.entities.statics.Lamp1;
 import tilegame.entities.statics.TorchStand;
+import tilegame.gfx.Assets;
+import tilegame.items.Item;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -96,6 +99,17 @@ public class EntityManager {
         addEntity(new Lamp1(handler, 690, 900));
         addEntity(new Enemy1(handler, 300, 400));
         addEntity(new Enemy1(handler, 400, 300));
+
+        Chest chest = new Chest(handler, 2300, 50, 64, 64, Assets.chest1);
+        chest.addContent(Item.coinItem.createNew(4));
+        chest.addContent(Item.mushroomItem.createNew(1));
+        chest.addContent(Item.coinItem.createNew(4));
+        chest.addContent(Item.mushroomItem.createNew(1));
+        chest.addContent(Item.coinItem.createNew(4));
+        chest.addContent(Item.mushroomItem.createNew(1));
+        chest.addContent(Item.coinItem.createNew(4));
+        chest.addContent(Item.mushroomItem.createNew(1));
+        addEntity(chest);
 //        addEntity(new Enemy1(handler, 500, 100));
 //        addEntity(new Enemy1(handler, 140,220));
     }
