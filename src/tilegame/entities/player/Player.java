@@ -27,9 +27,14 @@ public class Player extends Creature {
     // wczesniejszy stan aktywowanych klawiszy
     private boolean sword;
 
+    // skrzynia ktora jest aktualnie lootowana
+    // jesli gracz nie lootuje to ta zmienna wskazuje na null
     protected Chest looting;
 
+    // ekwipunek
     protected Inventory inventory;
+
+    // okienko zbierania lootu
     protected LootWindow lootWindow;
 
     public Player(Handler handler, float x, float y) {
@@ -59,6 +64,8 @@ public class Player extends Creature {
     public void tick() {
 
         if (looting != null) {
+
+            // wyjscie z okienka lootu
             if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)) {
                 looting = null;
             }
@@ -190,6 +197,7 @@ public class Player extends Creature {
     @Override
     public void die() {
         System.out.println("player died");
+        active = false;
     }
 
     // GETTERS SETTERS

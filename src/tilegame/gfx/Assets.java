@@ -14,7 +14,7 @@ public class Assets {
     // spritesheet
     public static BufferedImage floor, wall, shallowWater, mediumWater, deepWater;
     // test player
-    public static BufferedImage player, playerSword, enemy1;
+    public static BufferedImage player, playerSword, enemy1, enemy1corpse;
     // mask
     public static BufferedImage bkgdMask;
     // static entities
@@ -76,6 +76,7 @@ public class Assets {
         // enemies
 
         enemy1 = ImageLoader.loadImage("/res/textures/entities/mobs/enemy.png");
+        enemy1corpse = ImageLoader.loadImage("/res/textures/entities/mobs/enemycorpse.png");
 
         // items
 

@@ -4,10 +4,7 @@ import tilegame.Handler;
 import tilegame.display.Display;
 import tilegame.entities.mobs.hostile.Enemy1;
 import tilegame.entities.player.Player;
-import tilegame.entities.statics.Chest;
-import tilegame.entities.statics.House1;
-import tilegame.entities.statics.Lamp1;
-import tilegame.entities.statics.TorchStand;
+import tilegame.entities.statics.*;
 import tilegame.gfx.Assets;
 import tilegame.items.Item;
 
@@ -24,6 +21,10 @@ public class EntityManager {
     // wszystkie obiekty na mapie
     private ArrayList<Entity> entities;
 
+    // kazdy obiekt ktory ma byc dodany do gry w trakcie jej trwania
+    // musi byc dodawany przez ta liste "most"
+    private ArrayList<Entity> toBeAdded;
+
     // najpierw renderowane sa entitiesy ktore sa nizej
     private Comparator<Entity> renderSorter = (a, b) -> {
         if (a.getY() + a.getHeight() - a.bounds.height < b.getY() + b.getHeight() - b.bounds.height)
@@ -34,7 +35,10 @@ public class EntityManager {
     public EntityManager(Handler handler, Player player) {
         this.handler = handler;
         this.player = player;
+
+        // inicjalizacja
         entities = new ArrayList<Entity>();
+        toBeAdded = new ArrayList<>();
 
         // od razu dodaj gracza do listy obiektow
         addEntity(player);
@@ -45,12 +49,20 @@ public class EntityManager {
     // TICK RENDER
 
     public void tick() {
+        // zanim cokolwiek zrobisz dodaj wszystkie obiekty czekajace na dodanie
+        entities.addAll(toBeAdded);
+
+        // oproznij liste zeby nie powielac obiektow
+        toBeAdded.clear();
+
+        // tick loopuje po obiektach przez iterator
         Iterator<Entity> it = entities.iterator();
 
         // tickuj kazda entity na liscie
         while (it.hasNext()) {
             Entity e = it.next();
             e.tick();
+            // jesli nie jest aktywna, wyrzuc ja z gry
             if (!e.isActive())
                 it.remove();
         }
@@ -100,23 +112,16 @@ public class EntityManager {
         addEntity(new Enemy1(handler, 300, 400));
         addEntity(new Enemy1(handler, 400, 300));
 
+        // musze ogarnac lepszy sposob na umieszczanie skrzynek i ich lootu w grze w grze
         Chest chest = new Chest(handler, 2300, 50, 64, 64, Assets.chest1);
         chest.addContent(Item.coinItem.createNew(4));
         chest.addContent(Item.mushroomItem.createNew(1));
-        chest.addContent(Item.coinItem.createNew(4));
-        chest.addContent(Item.mushroomItem.createNew(1));
-        chest.addContent(Item.coinItem.createNew(4));
-        chest.addContent(Item.mushroomItem.createNew(1));
-        chest.addContent(Item.coinItem.createNew(4));
-        chest.addContent(Item.mushroomItem.createNew(1));
         addEntity(chest);
-//        addEntity(new Enemy1(handler, 500, 100));
-//        addEntity(new Enemy1(handler, 140,220));
     }
 
-    // dodanie obiektu do listy
+    // dodanie obiektu do kolejki
     public void addEntity(Entity e) {
-        entities.add(e);
+        toBeAdded.add(e);
     }
 
     // szukanie danej entity po kordach

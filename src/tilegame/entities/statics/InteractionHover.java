@@ -62,7 +62,7 @@ public class InteractionHover {
 
         // jesli jakis obiekt znajduje sie na liscie
         if (!staticEntitiesInRange.isEmpty()) {
-            if(j < 0 || j >= staticEntitiesInRange.size())
+            if (j < 0 || j >= staticEntitiesInRange.size())
                 j = 0;
 
             // zwroc obiekt znajdujacy sie na j miejscu w liscie
@@ -78,8 +78,8 @@ public class InteractionHover {
         // jesli na liscie znajduje sie jakis obiekt -> jakis obiekt jest oznaczony
         // to podswietlenie tego obiektu
         if (!staticEntitiesInRange.isEmpty())
-            g.drawImage(Assets.interactionHover, (int) (hovered.getX() - 5 - handler.getGameCamera().getxOffset()),
-                    (int) (hovered.getY() + hovered.getHeight() - 10 - handler.getGameCamera().getyOffset()), null);
+            g.drawImage(Assets.interactionHover, (int) (hovered.getX() + hovered.getWidth() / 2 - Assets.interactionHover.getWidth() / 2 - handler.getGameCamera().getxOffset()),
+                    (int) (hovered.getY() + hovered.getHeight() + 10 - handler.getGameCamera().getyOffset()), null);
     }
 
     // wrzuca wszystkie obiekty w zasiegu do listy i zwraca ta liste
@@ -88,9 +88,9 @@ public class InteractionHover {
 
         // max (0,x) zapobiega sprawdzaniu poza granicami mapy
         int xStart = Math.max(0, (int) player.getX() - pixelRange);
-        int xEnd = (int) player.getX() + pixelRange;
+        int xEnd = (int) player.getX() + player.getWidth() + pixelRange;
         int yStart = Math.max(0, (int) player.getY() - pixelRange);
-        int yEnd = (int) player.getY() + pixelRange;
+        int yEnd = (int) player.getY() + player.getHeight() + pixelRange;
 
         for (int i = xStart; i <= xEnd; i++) {
             for (int j = yStart; j <= yEnd; j++) {
@@ -113,14 +113,14 @@ public class InteractionHover {
     // nastepny indeks
     public void nextEntity() {
         j++;
-        if(j >= staticEntitiesInRange.size())
+        if (j >= staticEntitiesInRange.size())
             j = 0;
     }
 
     // poprzedni indeks
-    public void prevEntity(){
+    public void prevEntity() {
         j--;
-        if(j < 0){
+        if (j < 0) {
             j = staticEntitiesInRange.size() - 1;
         }
     }

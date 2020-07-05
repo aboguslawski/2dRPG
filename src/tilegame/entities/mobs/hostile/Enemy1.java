@@ -5,7 +5,6 @@ import tilegame.gfx.Assets;
 import tilegame.items.Item;
 
 import java.awt.*;
-import java.util.Random;
 
 
 // testowy przeciwnik
@@ -19,6 +18,10 @@ public class Enemy1 extends HostileMob {
         bounds.y = 90;
         bounds.width = 40;
         bounds.height = 40;
+
+        loot.add(Item.coinItem.createNew(2));
+
+        corpseImg = Assets.enemy1corpse;
     }
 
     @Override
@@ -38,9 +41,4 @@ public class Enemy1 extends HostileMob {
 
     }
 
-    // po smierci dropi przedmiot
-    @Override
-    public void die() {
-            handler.getWorld().getItemManager().addItem(Item.coinItem.createNew((int) x, (int) y));
-    }
 }

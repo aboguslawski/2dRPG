@@ -3,8 +3,12 @@ package tilegame.entities.mobs;
 import tilegame.Handler;
 import tilegame.entities.Creature;
 import tilegame.entities.Entity;
+import tilegame.entities.statics.Corpse;
+import tilegame.items.Item;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 
 // podstawowa klasa moba ktora beda rozszerzac:
@@ -25,6 +29,15 @@ public abstract class Mob extends Creature {
 
     // koordy spawnu moba
     protected float xSpawn, ySpawn;
+
+    // drop
+    protected ArrayList<Item> loot;
+
+    // tekstura zwlok
+    protected BufferedImage corpseImg;
+
+    // obiekt zwlok
+    protected Corpse corpse;
 
     public Mob(Handler handler, float x, float y, int width, int height) {
         super(handler, x, y, width, height);
@@ -51,6 +64,9 @@ public abstract class Mob extends Creature {
         // timery
         lastTime = System.currentTimeMillis();
         timer = 0;
+
+        // inicjalizacja
+        loot = new ArrayList<>();
     }
 
     @Override
@@ -115,6 +131,13 @@ public abstract class Mob extends Creature {
         g.setColor(Color.black);
         g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()), (int) (y + bounds.y - handler.getGameCamera().getyOffset()), bounds.width, bounds.height);
 
+    }
+
+    @Override
+    public void die() {
+
+        // po smierci tworzy obiekt zwlok na swoim miejscu
+        handler.getWorld().getEntityManager().addEntity(new Corpse(handler, x, y + height, 64, 32, corpseImg, loot));
     }
 
     // losowe instrukcje ruchu dla "naturalnego" wygladu
@@ -224,5 +247,29 @@ public abstract class Mob extends Creature {
     public Rectangle getIdleArea() {
         return new Rectangle((int) (xSpawn - handler.getGameCamera().getxOffset() - idleRange),
                 (int) (ySpawn - handler.getGameCamera().getyOffset() - idleRange), idleRange * 2, idleRange * 2);
+    }
+
+    public ArrayList<Item> getLoot() {
+        return loot;
+    }
+
+    public void setLoot(ArrayList<Item> loot) {
+        this.loot = loot;
+    }
+
+    public Corpse getCorpse() {
+        return corpse;
+    }
+
+    public void setCorpse(Corpse corpse) {
+        this.corpse = corpse;
+    }
+
+    public BufferedImage getCorpseImg() {
+        return corpseImg;
+    }
+
+    public void setCorpseImg(BufferedImage corpseImg) {
+        this.corpseImg = corpseImg;
     }
 }

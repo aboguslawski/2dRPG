@@ -23,7 +23,7 @@ public class Chest extends StaticEntity {
         this.texture = texture;
 
         // z kazda skrzynia mozna wejsc w interakcje
-        this.interaction = true;
+        interaction = true;
 
         // inicjalizacja
         content = new ArrayList<>();

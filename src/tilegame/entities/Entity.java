@@ -146,4 +146,8 @@ public abstract class Entity {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public Handler getHandler() {
+        return handler;
+    }
 }
