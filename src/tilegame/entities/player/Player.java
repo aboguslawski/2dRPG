@@ -3,6 +3,7 @@ package tilegame.entities.player;
 import tilegame.Handler;
 import tilegame.display.Display;
 import tilegame.entities.Creature;
+import tilegame.entities.mobs.AttackHover;
 import tilegame.entities.statics.Chest;
 import tilegame.entities.statics.InteractionHover;
 import tilegame.inventory.Inventory;
@@ -16,16 +17,17 @@ import java.awt.event.KeyEvent;
 public class Player extends Creature {
 
     // stany
-    private PState pstate;
-    private WalkPS walkPS;
-    private WeaponPS weaponPS;
+    private PlayerState pstate;
+//    private WalkPS walkPS;
+//    private WeaponPS weaponPS;
 
     // znacznik interakcji z innymi obiektami
     // w interakcje mozna wchodzic bez wzledu na aktualny stan
     private InteractionHover interactionHover;
+    private AttackHover attackHover;
 
     // wczesniejszy stan aktywowanych klawiszy
-    private boolean sword;
+//    private boolean sword;
 
     // skrzynia ktora jest aktualnie lootowana
     // jesli gracz nie lootuje to ta zmienna wskazuje na null
@@ -37,9 +39,16 @@ public class Player extends Creature {
     // okienko zbierania lootu
     protected LootWindow lootWindow;
 
+//    protected PlayerState walkingState, armedState, swimmingState, attackState;
+    protected WalkingState walkingState;
+    protected ArmedState armedState;
+    protected SwimmingState swimmingState;
+    protected AttackState attackState;
+    protected InventoryState inventoryState;
+
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
-        this.sword = false;
+//        this.sword = false;
         this.health = 20;
         initHealth = health;
 
@@ -51,10 +60,20 @@ public class Player extends Creature {
         bounds.height = 32;
 
         // inicjalizacja
-        this.walkPS = new WalkPS(handler, this);
-        this.weaponPS = new WeaponPS(handler, this);
-        this.pstate = walkPS;
+//        this.walkPS = new WalkPS(handler, this);
+//        this.weaponPS = new WeaponPS(handler, this);
+
+
+        walkingState = new WalkingState(handler, this);
+        swimmingState = new SwimmingState(handler, this);
+        armedState = new ArmedState(handler, this);
+        attackState = new AttackState(handler, this);
+        inventoryState = new InventoryState(handler, this);
+        this.pstate = walkingState;
+
+
         interactionHover = new InteractionHover(handler, this);
+        attackHover = new AttackHover(handler, this);
         inventory = new Inventory(handler);
         lootWindow = new LootWindow(handler);
         looting = null;
@@ -63,30 +82,30 @@ public class Player extends Creature {
     @Override
     public void tick() {
 
-        if (looting != null) {
-
-            // wyjscie z okienka lootu
-            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)) {
-                looting = null;
-            }
-        }
+//        if (looting != null) {
+//
+//            // wyjscie z okienka lootu
+//            if (handler.getKeyManager().keyJustPressed(KeyEvent.VK_ESCAPE)) {
+//                looting = null;
+//            }
+//        }
 
         // tickuj znacznik interakcji
-        interactionHover.tick();
+//        interactionHover.tick();
+        // tickuj aktualny stan
 
         // Movement
-        getInput();
+//        getInput();
         move(); // metoda z klasy Creature
-
-        // tickuj aktualny stan
         pstate.tick();
+
 
         //wycentruj kamere na graczu
         handler.getGameCamera().centerOnEntity(this);
 
         // tickuj ekwipunek
-        inventory.tick();
-        lootWindow.tick();
+//        inventory.tick();
+//        lootWindow.tick();
     }
 
     // renderowanie odpowiedniej animacji gracza
@@ -94,7 +113,7 @@ public class Player extends Creature {
     public void render(Graphics g) {
 
         // renderuj znacznik interakcji
-        interactionHover.render(g);
+//        interactionHover.render(g);
 
         // renderuj aktualny stan
         pstate.render(g);
@@ -108,8 +127,9 @@ public class Player extends Creature {
     public void postRender(Graphics g) {
 
         // render ekwipunku i okna lootu
-        inventory.render(g);
-        lootWindow.render(g);
+//        inventory.render(g);
+//        lootWindow.render(g);
+        pstate.postRender(g);
 
         // pasek zdrowia
         g.setColor(Color.red);
@@ -127,66 +147,70 @@ public class Player extends Creature {
     }
 
     // reakcje na dany klawisz
-    private void getInput() {
-        xMove = 0;
-        yMove = 0;
-
-        // po aktywowaniu ekwipunku przejdz do stanu chodzenia i nie reaguj na zadne dalsze instrukcje
-        if (inventory.isActive() || lootWindow.isActive()) {
-            pstate = walkPS;
-            return;
-        }
-
-        // aktualna predkosc poruszania zalezna jest od stanu w ktorym znajduje sie gracz
-        walkSpeed = pstate.getWalkSpeed();
-        runSpeed = pstate.getRunSpeed();
-
-
-        // trzymajac shift zmienia sie predkosc ruchu
-        if (handler.getKeyManager().run) {
-            actualSpeed = runSpeed;
-        } else actualSpeed = walkSpeed;
-
-        // ruch
-        if (handler.getKeyManager().up) {
-            yMove = -actualSpeed;
-        }
-        if (handler.getKeyManager().down) {
-            yMove = actualSpeed;
-        }
-        if (handler.getKeyManager().left) {
-            xMove = -actualSpeed;
-        }
-        if (handler.getKeyManager().right) {
-            xMove += actualSpeed;
-        }
-
-        // wyciagniecie broni i zmiana stanu
-        if (handler.getKeyManager().sword) {
-            if (!this.sword) {
-                this.sword = true;
-                this.pstate = weaponPS;
-            } else {
-                this.pstate = walkPS;
-                this.sword = false;
-            }
-        }
-
-        // zmiana zaznaczonego obiektu do interakcji
-        if (handler.getKeyManager().nextEntity) {
-            interactionHover.nextEntity();
-            weaponPS.getAttackHover().nextEntity();
-        }
-        if (handler.getKeyManager().prevEntity) {
-            interactionHover.prevEntity();
-            weaponPS.getAttackHover().prevEntity();
-        }
-        // interakcja z zaznaczonym obiektem
-        if (handler.getKeyManager().interactWithEntity) {
-            if (interactionHover.getHovered() != null)
-                interactionHover.getHovered().interact();
-        }
-    }
+//    private void getInput() {
+//        xMove = 0;
+//        yMove = 0;
+//
+//        // po aktywowaniu ekwipunku przejdz do stanu chodzenia i nie reaguj na zadne dalsze instrukcje
+//        if (inventory.isActive() || lootWindow.isActive()) {
+////            pstate = walkPS;
+//            return;
+//        }
+//
+//        // aktualna predkosc poruszania zalezna jest od stanu w ktorym znajduje sie gracz
+////        walkSpeed = pstate.getWalkSpeed();
+////        runSpeed = pstate.getRunSpeed();
+//
+//        // trzymajac shift zmienia sie predkosc ruchu
+//        if (handler.getKeyManager().shift) {
+//            actualSpeed = runSpeed;
+//        } else actualSpeed = walkSpeed;
+//
+//        // ruch
+//        if (handler.getKeyManager().up) {
+//            yMove = -actualSpeed;
+//        }
+//        if (handler.getKeyManager().down) {
+//            yMove = actualSpeed;
+//        }
+//        if (handler.getKeyManager().left) {
+//            xMove = -actualSpeed;
+//        }
+//        if (handler.getKeyManager().right) {
+//            xMove += actualSpeed;
+//        }
+//
+//        if(xMove != 0 && yMove != 0){
+//            xMove /= 1.2;
+//            yMove /= 1.2;
+//        }
+//
+//        // wyciagniecie broni i zmiana stanu
+//        if (handler.getKeyManager().n1) {
+//            if (!this.sword) {
+//                this.sword = true;
+////                this.pstate = weaponPS;
+////            } else {
+////                this.pstate = walkPS;
+//                this.sword = false;
+//            }
+//        }
+//
+//        // zmiana zaznaczonego obiektu do interakcji
+//        if (handler.getKeyManager().e) {
+//            interactionHover.nextEntity();
+//            weaponPS.getAttackHover().nextEntity();
+//        }
+//        if (handler.getKeyManager().q) {
+//            interactionHover.prevEntity();
+//            weaponPS.getAttackHover().prevEntity();
+//        }
+//        // interakcja z zaznaczonym obiektem
+//        if (handler.getKeyManager().f) {
+//            if (interactionHover.getHovered() != null)
+//                interactionHover.getHovered().interact();
+//        }
+//    }
 
     // brak przewidzianych interakcji gracza z samym soba?
     @Override
@@ -238,5 +262,21 @@ public class Player extends Creature {
 
     public void setLootWindow(LootWindow lootWindow) {
         this.lootWindow = lootWindow;
+    }
+
+    public PlayerState getPstate() {
+        return pstate;
+    }
+
+    public void setPstate(PlayerState pstate) {
+        this.pstate = pstate;
+    }
+
+    public AttackHover getAttackHover() {
+        return attackHover;
+    }
+
+    public void setAttackHover(AttackHover attackHover) {
+        this.attackHover = attackHover;
     }
 }

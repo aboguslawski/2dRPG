@@ -10,8 +10,8 @@ public class KeyManager implements KeyListener {
     // w miejscu keys[keycode] zmienia sie na true kiedy klawisz z danym keycode jest wywolany
 
     private boolean[] keys, justPressed, cantPress;
-    public boolean up, down, left, right, run, sword, prevEntity, nextEntity, interactWithEntity;
-    public boolean attack, atForward, atLeft, atRight, block;
+    public boolean up, down, left, right, shift, n1, q, e, f, i;
+    public boolean space, w, a, d, s;
 
     public KeyManager() {
         keys = new boolean[512];
@@ -41,24 +41,26 @@ public class KeyManager implements KeyListener {
         right = keys[KeyEvent.VK_RIGHT];
 
         // aktywacja sprintu
-        run = keys[KeyEvent.VK_SHIFT];
+        shift = keys[KeyEvent.VK_SHIFT];
 
         // wyciagniecie i schowanie broni
-        sword = justPressed[KeyEvent.VK_1];
+        n1 = justPressed[KeyEvent.VK_1];
 
         // zmiana obiektu
-        prevEntity = justPressed[KeyEvent.VK_Q];
-        nextEntity = justPressed[KeyEvent.VK_E];
+        q = justPressed[KeyEvent.VK_Q];
+        e = justPressed[KeyEvent.VK_E];
 
         // interakcja z obiektem
-        interactWithEntity = justPressed[KeyEvent.VK_F];
+        f = justPressed[KeyEvent.VK_F];
+
+        i = justPressed[KeyEvent.VK_I];
 
         // walka
-        attack = keys[KeyEvent.VK_SPACE];
-        atForward = justPressed[KeyEvent.VK_W];
-        atLeft = justPressed[KeyEvent.VK_A];
-        atRight = justPressed[KeyEvent.VK_D];
-        block = keys[KeyEvent.VK_S];
+        space = keys[KeyEvent.VK_SPACE];
+        w = justPressed[KeyEvent.VK_W];
+        a = justPressed[KeyEvent.VK_A];
+        d = justPressed[KeyEvent.VK_D];
+        s = keys[KeyEvent.VK_S];
     }
 
     @Override

@@ -60,38 +60,12 @@ public abstract class PState {
                 return animation.getE().getCurrentFrame();
             case "N":
                 return animation.getN().getCurrentFrame();
-            case "S":
-                return animation.getS().getCurrentFrame();
-            case "NW":
-                return animation.getNw().getCurrentFrame();
-            case "NE":
-                return animation.getNe().getCurrentFrame();
-            case "SE":
-                return animation.getSe().getCurrentFrame();
             default:
-                return animation.getSw().getCurrentFrame();
+                return animation.getS().getCurrentFrame();
         }
     }
 
     protected void focusDirection(Entity e) {
-
-        if (e.getX() <= player.getX() - 10 && e.getY() <= player.getY() - 10) {
-            player.setDirection("NW");
-        } else if (e.getX() >= player.getX() + 10 && e.getY() <= player.getY() - 10) {
-            player.setDirection("NE");
-        } else if (e.getX() >= player.getX() + 10 && e.getY() >= player.getY() + 10) {
-            player.setDirection("SE");
-        } else if (e.getX() <= player.getX() - 10 && e.getY() >= player.getY() + 10) {
-            player.setDirection("SW");
-        } else if (e.getX() < player.getX() + 10 && e.getX() > player.getX() - 10 && e.getY() <= player.getY() - 10) {
-            player.setDirection("N");
-        } else if (e.getX() >= player.getX() + 10 && e.getY() > player.getY() - 10 && e.getY() < player.getY() + 10) {
-            player.setDirection("E");
-        } else if (e.getX() < player.getX() + 10 && e.getX() > player.getX() - 10 && e.getY() >= player.getY() + 10) {
-            player.setDirection("S");
-        } else if (e.getX() <= player.getX() - 10 && e.getY() > player.getY() - 10 && e.getY() < player.getY() + 10) {
-            player.setDirection("W");
-        } else {
             if (Math.abs(player.getX() - e.getX()) >= Math.abs(player.getY() - e.getY())) {
                 if (e.getX() >= player.getX()) {
                     player.setDirection("E");
@@ -105,7 +79,7 @@ public abstract class PState {
                     player.setDirection("N");
                 }
             }
-        }
+//        }
     }
 
     // GETTER SETTER

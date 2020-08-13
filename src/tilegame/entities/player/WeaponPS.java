@@ -19,7 +19,7 @@ public class WeaponPS extends PState {
     private MobAnimation attack, prep;
 
     // attack speed
-    private long lastAttackTimer, attackCooldown = 200, attackTimer = attackCooldown;
+    private long lastAttackTimer, attackCooldown, attackTimer = attackCooldown;
 
     // atak
     private AttackHover attackHover;
@@ -27,16 +27,20 @@ public class WeaponPS extends PState {
     // zasieg ataku
     private int attackRange;
 
+    private boolean attacking;
+
     public WeaponPS(Handler handler, Player player) {
         super(handler, player);
+        attackCooldown = 400;
 
         // animacje
         walk = new MobAnimation("/res/textures/playerSword.png", 250, 4, 64, 128);
-        attack = new MobAnimation("/res/textures/playerMeeleAttack.png", 250, 1, 64, 128);
-        prep = new MobAnimation("/res/textures/attackPrep.png", 250, 1, 64, 128);
+        idle = new MobAnimation("/res/textures/playerSwordIdle.png", 250, 4, 64, 128);
+        attack = new MobAnimation("/res/textures/playerSwordHit.png", (int) attackCooldown / 4, 4, 64, 128);
+        prep = new MobAnimation("/res/textures/playerSword.png", 250, 1, 64, 128);
 
         // inicjowana animacja
-        animation = walk;
+        animation = idle;
 
         // znacznik obiektu na ktorym gracz ma focus
         attackHover = new AttackHover(handler, player);
@@ -45,7 +49,7 @@ public class WeaponPS extends PState {
         this.attackRange = 100;
 
         // szybkosci poruszania sie w stanie
-        this.walkSpeed = 2.5f;
+        this.walkSpeed = 2.8f;
         this.runSpeed = 4f;
     }
 
@@ -64,40 +68,56 @@ public class WeaponPS extends PState {
     @Override
     protected void getInput() {
 
-        animation = walk;
-        this.walkSpeed = 2.5f;
-        this.runSpeed = 4f;
+        System.out.println(System.currentTimeMillis() - lastAttackTimer);
+        if (System.currentTimeMillis() - lastAttackTimer > attackCooldown)
+            this.attacking = false;
+        else {
+            this.attacking = true;
+        }
 
-        // jesli wcisnieto przycisk atakowania
-        if (handler.getKeyManager().attack) {
+        if (attacking) {
+            animation = attack;
+        } else {
+            animation = idle;
+            this.walkSpeed = 2.5f;
+            this.runSpeed = 4f;
+
+            if (handler.getKeyManager().up
+                    || handler.getKeyManager().down
+                    || handler.getKeyManager().left
+                    || handler.getKeyManager().right) {
+                animation = walk;
+            }
+
+            // jesli wcisnieto przycisk atakowania
+            if (handler.getKeyManager().space) {
 
 //            animation = prep;
-            this.walkSpeed = 1f;
-            this.runSpeed = 1f;
+                this.walkSpeed = 1f;
+                this.runSpeed = 1f;
 
-            // jesli jest ktos oznaczony czerwnoym hoverem
-            if (attackHover.getHovered() != null) {
+                // jesli jest ktos oznaczony czerwnoym hoverem
+                if (attackHover.getHovered() != null) {
 
-                focusDirection(attackHover.getHovered());
+                    focusDirection(attackHover.getHovered());
 
-                if (handler.getKeyManager().atForward) {
-                    // wykonaj atak na oznaczonym przeciwniku
-                    makeForwardAttack(attackHover.getHovered());
+                    if (handler.getKeyManager().w) {
+                        // wykonaj atak na oznaczonym przeciwniku
+                        makeForwardAttack(attackHover.getHovered());
+                    } else if (handler.getKeyManager().a) {
+                        System.out.println("dir przed " + player.getDirection());
+                        makeLeftAttack(attackHover.getHovered());
+                        System.out.println("dir po " + player.getDirection());
+                    } else if (handler.getKeyManager().d) {
+                        System.out.println("dir przed " + player.getDirection());
+                        makeRightAttack(attackHover.getHovered());
+                        System.out.println("dir po " + player.getDirection());
+                    }
+
+
+                    player.move();
+
                 }
-                else if(handler.getKeyManager().atLeft){
-                    System.out.println("dir przed " + player.getDirection());
-                    makeLeftAttack(attackHover.getHovered());
-                    System.out.println("dir po " + player.getDirection());
-                }
-                else if(handler.getKeyManager().atRight){
-                    System.out.println("dir przed " + player.getDirection());
-                    makeRightAttack(attackHover.getHovered());
-                    System.out.println("dir po " + player.getDirection());
-                }
-
-
-                player.move();
-
             }
         }
     }
@@ -108,8 +128,6 @@ public class WeaponPS extends PState {
 //        if(player.inventory.isActive())
 //            return;
 
-        animation = attack;
-
         // jesli roznica odleglosci pomiedzy graczem i obiektem jest mniejsza od zasiegu ataku, zran obiekt
         if (Math.abs(e.getX() - player.getX()) <= attackRange
                 && Math.abs(e.getY() - player.getY()) <= attackRange) {
@@ -118,13 +136,7 @@ public class WeaponPS extends PState {
 
         // reset timera po wykonanym ataku
         attackTimer = 0;
-
-        if (e.getX() >= player.getX()) {
-            player.setxMove(5);
-        } else player.setxMove(-5);
-        if (e.getY() >= player.getY()) {
-            player.setyMove(5);
-        } else player.setyMove(-5);
+        attacking = true;
 
         System.out.println("attack, left hp" + e.getHealth());
 
@@ -152,7 +164,7 @@ public class WeaponPS extends PState {
         } else player.setyMove(-20);
     }
 
-    private void makeLeftAttack(Entity e){
+    private void makeLeftAttack(Entity e) {
 
         // odliczanie do nastepnego ataku
         attackTimer += System.currentTimeMillis() - lastAttackTimer;
@@ -167,7 +179,7 @@ public class WeaponPS extends PState {
         makeAttack(e);
     }
 
-    private void makeRightAttack(Entity e){
+    private void makeRightAttack(Entity e) {
 
         // odliczanie do nastepnego ataku
         attackTimer += System.currentTimeMillis() - lastAttackTimer;

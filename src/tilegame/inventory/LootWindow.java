@@ -63,8 +63,10 @@ public class LootWindow {
 
         // wyciagniecie przedmiotu ze skrzyni i umieszczenie go w ekwipunku gracza
         if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_E)){
-            handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(lootItems.get(selectedItem));
-            lootItems.remove(selectedItem);
+            try{
+                handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(lootItems.get(selectedItem));
+                lootItems.remove(selectedItem);
+            } catch (IndexOutOfBoundsException ignored){}
         }
     }
 

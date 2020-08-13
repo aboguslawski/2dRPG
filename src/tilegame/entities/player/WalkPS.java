@@ -22,7 +22,7 @@ public class WalkPS extends PState {
 
         // szybkosci poruszania sie w stanie
         this.walkSpeed = 3.0f;
-        this.runSpeed = 5.0f;
+        this.runSpeed = 4.4f;
     }
 
     @Override

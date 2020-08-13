@@ -39,6 +39,7 @@ public class Chest extends StaticEntity {
         // renderowanie samego obrazu skrzyni
         g.drawImage(texture, (int) (x - handler.getGameCamera().getxOffset()),
                 (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
+        drawBounds(g);
     }
 
     @Override

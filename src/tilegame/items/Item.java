@@ -46,7 +46,7 @@ public class Item {
 
         // podnoszenie przedmiotu
         if(handler.getWorld().getEntityManager().getPlayer().getCollisionBounds(0f, 0f).intersects(bounds)
-        && handler.getKeyManager().interactWithEntity){
+        && handler.getKeyManager().f){
             pickedUp = true;
             handler.getWorld().getEntityManager().getPlayer().getInventory().addItem(this);
         }

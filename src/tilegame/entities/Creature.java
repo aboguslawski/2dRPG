@@ -45,9 +45,7 @@ public abstract class Creature extends Entity {
         if (xMove > 0) {
             // w prawo
             // zwrot
-            if (yMove < 0) direction = "NE";
-            else if (yMove == 0) direction = "E";
-            else if (yMove > 0) direction = "SE";
+            direction = "E";
 
             int tx = (int) (x + xMove + bounds.x + bounds.width) / Tile.TILE_WIDTH; // tx - gdzie chcemy sie ruszyc (prawy kraniec)
 
@@ -63,10 +61,7 @@ public abstract class Creature extends Entity {
         } else if (xMove < 0) {
             // w lewo
             // zwrot
-            if (yMove < 0) direction = "NW";
-            else if (yMove == 0) direction = "W";
-            else if (yMove > 0) direction = "SW";
-
+            direction = "W";
 
             int tx = (int) (x + xMove + bounds.x) / Tile.TILE_WIDTH; // tx - gdzie chcemy sie ruszyc (lewy kraniec)
 
@@ -89,10 +84,7 @@ public abstract class Creature extends Entity {
         if (yMove < 0) {
             // do gory
             // zwrot
-            if (xMove < 0) direction = "NW";
-            else if (xMove == 0) direction = "N";
-            else if (xMove > 0) direction = "NE";
-
+            direction = "N";
 
             int ty = (int) (y + yMove + bounds.y) / Tile.TILE_HEIGHT; // ty - gdzie chcemy sie ruszyc (gorny kraniec)
 
@@ -107,10 +99,7 @@ public abstract class Creature extends Entity {
         } else if (yMove > 0) {
             // w dol
             // zwrot
-            if (xMove < 0) direction = "SW";
-            else if (xMove == 0) direction = "S";
-            else if (xMove > 0) direction = "SE";
-
+            direction = "S";
 
             int ty = (int) (y + yMove + bounds.y + bounds.height) / Tile.TILE_HEIGHT; // ty - gdzie chcemy sie ruszyc (dolny kraniec)
 
@@ -189,6 +178,11 @@ public abstract class Creature extends Entity {
         this.walkSpeed = walkSpeed;
     }
 
+    public float getActualSpeed() {
+        return actualSpeed;
+    }
 
-
+    public void setActualSpeed(float actualSpeed) {
+        this.actualSpeed = actualSpeed;
+    }
 }

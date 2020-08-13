@@ -14,7 +14,7 @@ public class Inventory {
     private Handler handler;
 
     // czy jest uruchomiony
-    private boolean active = false;
+    private boolean active = true;
 
     // wszystkie przedmioty w danym ekwipunku
     private ArrayList<Item> inventoryItems;
@@ -44,8 +44,8 @@ public class Inventory {
     public void tick(){
 
         // po wcisnieciu 'I' na klawiaturze zmienia sie stan aktywacji (I wlacza i wylacza okno)
-        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_I))
-            active = !active;
+//        if(handler.getKeyManager().keyJustPressed(KeyEvent.VK_I))
+//            active = !active;
 
         // jesli okno ekwipunku nie jest aktywne, nie wykonuj dalej metody tick
         if(!active)

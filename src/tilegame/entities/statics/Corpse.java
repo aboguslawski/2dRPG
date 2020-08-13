@@ -29,6 +29,8 @@ public class Corpse extends Chest {
     @Override
     public void render(Graphics g) {
         super.render(g);
+        drawBounds(g);
+
     }
 
     @Override

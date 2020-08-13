@@ -130,7 +130,7 @@ public class EntityManager {
     public Entity getEntity(int xCord, int yCord) {
         for (int i = 0; i < entities.size(); i++) {
             Entity e = entities.get(i);
-            if (xCord == e.x && yCord == e.y) return e;
+            if (xCord == e.x + e.width/2f && yCord == e.y + e.height/2f) return e;
         }
         return null;
     }
